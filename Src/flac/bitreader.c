@@ -73,9 +73,11 @@ int read(Bitreader_t *reader, uint16_t nBits, void *d, uint16_t dBytes) {
     }
     while (nBits > 0) {
         reader->buffer <<= reader->bitsInBuffer;
-        int nextByte = fgetc(reader->file);
+        BYTE nextByte;
+        UINT read;
+        FRESULT res = f_read(&reader->file, &nextByte, 1, &read);
         // printf("NextByte: %02X\n", nextByte);
-        if (nextByte == EOF) {
+        if (read != -1) {
             return EOF;
         }
         reader->buffer |= nextByte;

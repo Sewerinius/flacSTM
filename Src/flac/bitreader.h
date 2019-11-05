@@ -5,6 +5,8 @@
 #ifndef CLIONTEST_BITREADER_H
 #define CLIONTEST_BITREADER_H
 
+#include <ff.h>
+
 typedef struct Bitreader {
     FIL file;
     uint16_t buffer;
