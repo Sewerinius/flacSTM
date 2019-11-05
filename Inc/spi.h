@@ -20,7 +20,7 @@
 #ifndef __spi_H
 #define __spi_H
 #ifdef __cplusplus
-extern "C" {
+ extern "C" {
 #endif
 
 /* Includes ------------------------------------------------------------------*/

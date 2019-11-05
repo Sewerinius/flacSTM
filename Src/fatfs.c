@@ -25,13 +25,14 @@ FIL USBHFile;       /* File object for USBH */
 
 /* USER CODE BEGIN Variables */
 
-/* USER CODE END Variables */
+/* USER CODE END Variables */    
 
-void MX_FATFS_Init(void) {
-    /*## FatFS: Link the USBH driver ###########################*/
-    retUSBH = FATFS_LinkDriver(&USBH_Driver, USBHPath);
+void MX_FATFS_Init(void) 
+{
+  /*## FatFS: Link the USBH driver ###########################*/
+  retUSBH = FATFS_LinkDriver(&USBH_Driver, USBHPath);
 
-    /* USER CODE BEGIN Init */
+  /* USER CODE BEGIN Init */
     /* additional user code for init */
     printf("USB path: %s\r\n", USBHPath);
 
@@ -41,7 +42,7 @@ void MX_FATFS_Init(void) {
         Error_Handler();
     }
 
-    /* USER CODE END Init */
+  /* USER CODE END Init */
 }
 
 /**
@@ -49,10 +50,11 @@ void MX_FATFS_Init(void) {
   * @param  None
   * @retval Time in DWORD
   */
-DWORD get_fattime(void) {
-    /* USER CODE BEGIN get_fattime */
+DWORD get_fattime(void)
+{
+  /* USER CODE BEGIN get_fattime */
     return 0;
-    /* USER CODE END get_fattime */
+  /* USER CODE END get_fattime */  
 }
 
 /* USER CODE BEGIN Application */

@@ -20,7 +20,7 @@
 #ifndef __rng_H
 #define __rng_H
 #ifdef __cplusplus
-extern "C" {
+ extern "C" {
 #endif
 
 /* Includes ------------------------------------------------------------------*/

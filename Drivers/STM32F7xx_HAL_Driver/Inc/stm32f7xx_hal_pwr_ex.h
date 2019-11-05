@@ -15,14 +15,14 @@
   *                        opensource.org/licenses/BSD-3-Clause
   *
   ******************************************************************************
-  */
+  */ 
 
 /* Define to prevent recursive inclusion -------------------------------------*/
 #ifndef __STM32F7xx_HAL_PWR_EX_H
 #define __STM32F7xx_HAL_PWR_EX_H
 
 #ifdef __cplusplus
-extern "C" {
+ extern "C" {
 #endif
 
 /* Includes ------------------------------------------------------------------*/
@@ -34,9 +34,9 @@ extern "C" {
 
 /** @addtogroup PWREx
   * @{
-  */
+  */ 
 
-/* Exported types ------------------------------------------------------------*/
+/* Exported types ------------------------------------------------------------*/ 
 /* Exported constants --------------------------------------------------------*/
 /** @defgroup PWREx_Exported_Constants PWREx Exported Constants
   * @{
@@ -66,7 +66,7 @@ extern "C" {
 /**
   * @}
   */
-
+	
 /** @defgroup PWREx_Regulator_state_in_UnderDrive_mode PWREx Regulator state in UnderDrive mode
   * @{
   */
@@ -74,8 +74,8 @@ extern "C" {
 #define PWR_LOWPOWERREGULATOR_UNDERDRIVE_ON                   ((uint32_t)(PWR_CR1_LPDS | PWR_CR1_LPUDS))
 /**
   * @}
-  */
-
+  */ 
+  
 /** @defgroup PWREx_Over_Under_Drive_Flag PWREx Over Under Drive Flag
   * @{
   */
@@ -85,7 +85,7 @@ extern "C" {
 /**
   * @}
   */
-
+	
 /** @defgroup PWREx_Wakeup_Pins_Flag PWREx Wake Up Pin Flags
   * @{
   */
@@ -101,8 +101,8 @@ extern "C" {
 
 /**
   * @}
-  */
-
+  */ 
+  
 /* Exported macro ------------------------------------------------------------*/
 /** @defgroup PWREx_Exported_Macro PWREx Exported Macro
   *  @{
@@ -177,34 +177,25 @@ extern "C" {
 /** @addtogroup PWREx_Exported_Functions PWREx Exported Functions
   *  @{
   */
-
+ 
 /** @addtogroup PWREx_Exported_Functions_Group1
   * @{
   */
 uint32_t HAL_PWREx_GetVoltageRange(void);
-
 HAL_StatusTypeDef HAL_PWREx_ControlVoltageScaling(uint32_t VoltageScaling);
 
 void HAL_PWREx_EnableFlashPowerDown(void);
-
-void HAL_PWREx_DisableFlashPowerDown(void);
-
+void HAL_PWREx_DisableFlashPowerDown(void); 
 HAL_StatusTypeDef HAL_PWREx_EnableBkUpReg(void);
-
-HAL_StatusTypeDef HAL_PWREx_DisableBkUpReg(void);
+HAL_StatusTypeDef HAL_PWREx_DisableBkUpReg(void); 
 
 void HAL_PWREx_EnableMainRegulatorLowVoltage(void);
-
 void HAL_PWREx_DisableMainRegulatorLowVoltage(void);
-
 void HAL_PWREx_EnableLowRegulatorLowVoltage(void);
-
 void HAL_PWREx_DisableLowRegulatorLowVoltage(void);
 
 HAL_StatusTypeDef HAL_PWREx_EnableOverDrive(void);
-
 HAL_StatusTypeDef HAL_PWREx_DisableOverDrive(void);
-
 HAL_StatusTypeDef HAL_PWREx_EnterUnderDriveSTOPMode(uint32_t Regulator, uint8_t STOPEntry);
 
 /**
@@ -232,7 +223,7 @@ HAL_StatusTypeDef HAL_PWREx_EnterUnderDriveSTOPMode(uint32_t Regulator, uint8_t 
                                             ((__PIN__) == PWR_WAKEUP_PIN3)       || \
                                             ((__PIN__) == PWR_WAKEUP_PIN4)       || \
                                             ((__PIN__) == PWR_WAKEUP_PIN5)       || \
-                                            ((__PIN__) == PWR_WAKEUP_PIN6)         || \
+                                            ((__PIN__) == PWR_WAKEUP_PIN6)  		 || \
                                             ((__PIN__) == PWR_WAKEUP_PIN1_HIGH)  || \
                                             ((__PIN__) == PWR_WAKEUP_PIN2_HIGH)  || \
                                             ((__PIN__) == PWR_WAKEUP_PIN3_HIGH)  || \
@@ -243,7 +234,7 @@ HAL_StatusTypeDef HAL_PWREx_EnterUnderDriveSTOPMode(uint32_t Regulator, uint8_t 
                                             ((__PIN__) == PWR_WAKEUP_PIN2_LOW)   || \
                                             ((__PIN__) == PWR_WAKEUP_PIN3_LOW)   || \
                                             ((__PIN__) == PWR_WAKEUP_PIN4_LOW)   || \
-                                            ((__PIN__) == PWR_WAKEUP_PIN5_LOW)     || \
+                                            ((__PIN__) == PWR_WAKEUP_PIN5_LOW)	 || \
                                             ((__PIN__) == PWR_WAKEUP_PIN6_LOW))
 /**
   * @}
@@ -255,12 +246,12 @@ HAL_StatusTypeDef HAL_PWREx_EnterUnderDriveSTOPMode(uint32_t Regulator, uint8_t 
 
 /**
   * @}
-  */
+  */ 
 
 /**
   * @}
   */
-
+  
 #ifdef __cplusplus
 }
 #endif

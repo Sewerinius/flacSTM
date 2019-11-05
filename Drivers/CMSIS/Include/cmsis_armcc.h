@@ -60,7 +60,7 @@
 #endif
 #ifndef   __STATIC_FORCEINLINE
 #define __STATIC_FORCEINLINE                   static __forceinline
-#endif
+#endif           
 #ifndef   __NO_RETURN
 #define __NO_RETURN                            __declspec(noreturn)
 #endif
@@ -450,7 +450,6 @@ uint32_t __REV16(uint32_t value) {
     rev16 r0, r0
     bx lr
 }
-
 #endif
 
 
@@ -469,7 +468,6 @@ int16_t __REVSH(int16_t value) {
     revsh r0, r0
     bx lr
 }
-
 #endif
 
 
@@ -660,7 +658,6 @@ uint32_t __RRX(uint32_t value) {
     rrx r0, r0
     bx lr
 }
-
 #endif
 
 

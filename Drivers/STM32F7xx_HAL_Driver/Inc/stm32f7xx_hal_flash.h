@@ -22,7 +22,7 @@
 #define __STM32F7xx_HAL_FLASH_H
 
 #ifdef __cplusplus
-extern "C" {
+ extern "C" {
 #endif
 
 /* Includes ------------------------------------------------------------------*/
@@ -44,39 +44,35 @@ extern "C" {
 /**
   * @brief  FLASH Procedure structure definition
   */
-typedef enum {
-    FLASH_PROC_NONE = 0U,
-    FLASH_PROC_SECTERASE,
-    FLASH_PROC_MASSERASE,
-    FLASH_PROC_PROGRAM
+typedef enum
+{
+  FLASH_PROC_NONE = 0U,
+  FLASH_PROC_SECTERASE,
+  FLASH_PROC_MASSERASE,
+  FLASH_PROC_PROGRAM
 } FLASH_ProcedureTypeDef;
 
 
 /**
   * @brief  FLASH handle Structure definition
   */
-typedef struct {
-    __IO FLASH_ProcedureTypeDef
-    ProcedureOnGoing;   /* Internal variable to indicate which procedure is ongoing or not in IT context */
+typedef struct
+{
+  __IO FLASH_ProcedureTypeDef ProcedureOnGoing;   /* Internal variable to indicate which procedure is ongoing or not in IT context */
 
-    __IO uint32_t
-    NbSectorsToErase;   /* Internal variable to save the remaining sectors to erase in IT context        */
+  __IO uint32_t               NbSectorsToErase;   /* Internal variable to save the remaining sectors to erase in IT context        */
 
-    __IO uint8_t
-    VoltageForErase;    /* Internal variable to provide voltage range selected by user in IT context     */
+  __IO uint8_t                VoltageForErase;    /* Internal variable to provide voltage range selected by user in IT context     */
 
-    __IO uint32_t
-    Sector;             /* Internal variable to define the current sector which is erasing               */
+  __IO uint32_t               Sector;             /* Internal variable to define the current sector which is erasing               */
 
-    __IO uint32_t
-    Address;            /* Internal variable to save address selected for program                        */
+  __IO uint32_t               Address;            /* Internal variable to save address selected for program                        */
 
-    HAL_LockTypeDef Lock;               /* FLASH locking object                                                          */
+  HAL_LockTypeDef             Lock;               /* FLASH locking object                                                          */
 
-    __IO uint32_t
-    ErrorCode;          /* FLASH error code                                                              */
+  __IO uint32_t               ErrorCode;          /* FLASH error code                                                              */
 
-} FLASH_ProcessTypeDef;
+}FLASH_ProcessTypeDef;
 
 /**
   * @}
@@ -316,15 +312,11 @@ typedef struct {
   */
 /* Program operation functions  ***********************************************/
 HAL_StatusTypeDef HAL_FLASH_Program(uint32_t TypeProgram, uint32_t Address, uint64_t Data);
-
 HAL_StatusTypeDef HAL_FLASH_Program_IT(uint32_t TypeProgram, uint32_t Address, uint64_t Data);
-
 /* FLASH IRQ handler method */
 void HAL_FLASH_IRQHandler(void);
-
 /* Callbacks in non blocking modes */
 void HAL_FLASH_EndOfOperationCallback(uint32_t ReturnValue);
-
 void HAL_FLASH_OperationErrorCallback(uint32_t ReturnValue);
 /**
   * @}
@@ -335,13 +327,9 @@ void HAL_FLASH_OperationErrorCallback(uint32_t ReturnValue);
   */
 /* Peripheral Control functions  **********************************************/
 HAL_StatusTypeDef HAL_FLASH_Unlock(void);
-
 HAL_StatusTypeDef HAL_FLASH_Lock(void);
-
 HAL_StatusTypeDef HAL_FLASH_OB_Unlock(void);
-
 HAL_StatusTypeDef HAL_FLASH_OB_Lock(void);
-
 /* Option bytes control */
 HAL_StatusTypeDef HAL_FLASH_OB_Launch(void);
 /**
@@ -353,7 +341,6 @@ HAL_StatusTypeDef HAL_FLASH_OB_Launch(void);
   */
 /* Peripheral State functions  ************************************************/
 uint32_t HAL_FLASH_GetError(void);
-
 HAL_StatusTypeDef FLASH_WaitForLastOperation(uint32_t Timeout);
 /**
   * @}

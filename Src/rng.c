@@ -27,42 +27,48 @@
 RNG_HandleTypeDef hrng;
 
 /* RNG init function */
-void MX_RNG_Init(void) {
+void MX_RNG_Init(void)
+{
 
-    hrng.Instance = RNG;
-    if (HAL_RNG_Init(&hrng) != HAL_OK) {
-        Error_Handler();
-    }
+  hrng.Instance = RNG;
+  if (HAL_RNG_Init(&hrng) != HAL_OK)
+  {
+    Error_Handler();
+  }
 
 }
 
-void HAL_RNG_MspInit(RNG_HandleTypeDef *rngHandle) {
+void HAL_RNG_MspInit(RNG_HandleTypeDef* rngHandle)
+{
 
-    if (rngHandle->Instance == RNG) {
-        /* USER CODE BEGIN RNG_MspInit 0 */
+  if(rngHandle->Instance==RNG)
+  {
+  /* USER CODE BEGIN RNG_MspInit 0 */
 
-        /* USER CODE END RNG_MspInit 0 */
-        /* RNG clock enable */
-        __HAL_RCC_RNG_CLK_ENABLE();
-        /* USER CODE BEGIN RNG_MspInit 1 */
+  /* USER CODE END RNG_MspInit 0 */
+    /* RNG clock enable */
+    __HAL_RCC_RNG_CLK_ENABLE();
+  /* USER CODE BEGIN RNG_MspInit 1 */
 
-        /* USER CODE END RNG_MspInit 1 */
-    }
+  /* USER CODE END RNG_MspInit 1 */
+  }
 }
 
-void HAL_RNG_MspDeInit(RNG_HandleTypeDef *rngHandle) {
+void HAL_RNG_MspDeInit(RNG_HandleTypeDef* rngHandle)
+{
 
-    if (rngHandle->Instance == RNG) {
-        /* USER CODE BEGIN RNG_MspDeInit 0 */
+  if(rngHandle->Instance==RNG)
+  {
+  /* USER CODE BEGIN RNG_MspDeInit 0 */
 
-        /* USER CODE END RNG_MspDeInit 0 */
-        /* Peripheral clock disable */
-        __HAL_RCC_RNG_CLK_DISABLE();
-        /* USER CODE BEGIN RNG_MspDeInit 1 */
+  /* USER CODE END RNG_MspDeInit 0 */
+    /* Peripheral clock disable */
+    __HAL_RCC_RNG_CLK_DISABLE();
+  /* USER CODE BEGIN RNG_MspDeInit 1 */
 
-        /* USER CODE END RNG_MspDeInit 1 */
-    }
-}
+  /* USER CODE END RNG_MspDeInit 1 */
+  }
+} 
 
 /* USER CODE BEGIN 1 */
 

@@ -30,9 +30,7 @@
 #pragma clang system_header   /* treat file as system include file */
 
 #ifndef __ARM_COMPAT_H
-
 #include <arm_compat.h>    /* Compatibility header for Arm Compiler 5 intrinsics */
-
 #endif
 
 /* CMSIS compiler specific defines */
@@ -47,7 +45,7 @@
 #endif
 #ifndef   __STATIC_FORCEINLINE
 #define __STATIC_FORCEINLINE                   __attribute__((always_inline)) static __inline
-#endif
+#endif                                           
 #ifndef   __NO_RETURN
 #define __NO_RETURN                            __attribute__((__noreturn__))
 #endif

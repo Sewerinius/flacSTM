@@ -63,7 +63,7 @@
 /* Private typedef -----------------------------------------------------------*/
 /* Private define ------------------------------------------------------------*/
 /* Private variables ---------------------------------------------------------*/
-extern Disk_drvTypeDef disk;
+extern Disk_drvTypeDef  disk;
 
 /* Private function prototypes -----------------------------------------------*/
 /* Private functions ---------------------------------------------------------*/
@@ -73,13 +73,14 @@ extern Disk_drvTypeDef disk;
   * @param  pdrv: Physical drive number (0..)
   * @retval DSTATUS: Operation status
   */
-DSTATUS disk_status(
-        BYTE pdrv        /* Physical drive number to identify the drive */
-) {
-    DSTATUS stat;
+DSTATUS disk_status (
+	BYTE pdrv		/* Physical drive number to identify the drive */
+)
+{
+  DSTATUS stat;
 
-    stat = disk.drv[pdrv]->disk_status(disk.lun[pdrv]);
-    return stat;
+  stat = disk.drv[pdrv]->disk_status(disk.lun[pdrv]);
+  return stat;
 }
 
 /**
@@ -87,16 +88,18 @@ DSTATUS disk_status(
   * @param  pdrv: Physical drive number (0..)
   * @retval DSTATUS: Operation status
   */
-DSTATUS disk_initialize(
-        BYTE pdrv                /* Physical drive nmuber to identify the drive */
-) {
-    DSTATUS stat = RES_OK;
+DSTATUS disk_initialize (
+	BYTE pdrv				/* Physical drive nmuber to identify the drive */
+)
+{
+  DSTATUS stat = RES_OK;
 
-    if (disk.is_initialized[pdrv] == 0) {
-        disk.is_initialized[pdrv] = 1;
-        stat = disk.drv[pdrv]->disk_initialize(disk.lun[pdrv]);
-    }
-    return stat;
+  if(disk.is_initialized[pdrv] == 0)
+  {
+    disk.is_initialized[pdrv] = 1;
+    stat = disk.drv[pdrv]->disk_initialize(disk.lun[pdrv]);
+  }
+  return stat;
 }
 
 /**
@@ -107,16 +110,17 @@ DSTATUS disk_initialize(
   * @param  count: Number of sectors to read (1..128)
   * @retval DRESULT: Operation result
   */
-DRESULT disk_read(
-        BYTE pdrv,        /* Physical drive nmuber to identify the drive */
-        BYTE *buff,        /* Data buffer to store read data */
-        DWORD sector,            /* Sector address in LBA */
-        UINT count        /* Number of sectors to read */
-) {
-    DRESULT res;
+DRESULT disk_read (
+	BYTE pdrv,		/* Physical drive nmuber to identify the drive */
+	BYTE *buff,		/* Data buffer to store read data */
+	DWORD sector,	        /* Sector address in LBA */
+	UINT count		/* Number of sectors to read */
+)
+{
+  DRESULT res;
 
-    res = disk.drv[pdrv]->disk_read(disk.lun[pdrv], buff, sector, count);
-    return res;
+  res = disk.drv[pdrv]->disk_read(disk.lun[pdrv], buff, sector, count);
+  return res;
 }
 
 /**
@@ -128,19 +132,18 @@ DRESULT disk_read(
   * @retval DRESULT: Operation result
   */
 #if _USE_WRITE == 1
+DRESULT disk_write (
+	BYTE pdrv,		/* Physical drive nmuber to identify the drive */
+	const BYTE *buff,	/* Data to be written */
+	DWORD sector,		/* Sector address in LBA */
+	UINT count        	/* Number of sectors to write */
+)
+{
+  DRESULT res;
 
-DRESULT disk_write(
-        BYTE pdrv,        /* Physical drive nmuber to identify the drive */
-        const BYTE *buff,    /* Data to be written */
-        DWORD sector,        /* Sector address in LBA */
-        UINT count            /* Number of sectors to write */
-) {
-    DRESULT res;
-
-    res = disk.drv[pdrv]->disk_write(disk.lun[pdrv], buff, sector, count);
-    return res;
+  res = disk.drv[pdrv]->disk_write(disk.lun[pdrv], buff, sector, count);
+  return res;
 }
-
 #endif /* _USE_WRITE == 1 */
 
 /**
@@ -151,18 +154,17 @@ DRESULT disk_write(
   * @retval DRESULT: Operation result
   */
 #if _USE_IOCTL == 1
+DRESULT disk_ioctl (
+	BYTE pdrv,		/* Physical drive nmuber (0..) */
+	BYTE cmd,		/* Control code */
+	void *buff		/* Buffer to send/receive control data */
+)
+{
+  DRESULT res;
 
-DRESULT disk_ioctl(
-        BYTE pdrv,        /* Physical drive nmuber (0..) */
-        BYTE cmd,        /* Control code */
-        void *buff        /* Buffer to send/receive control data */
-) {
-    DRESULT res;
-
-    res = disk.drv[pdrv]->disk_ioctl(disk.lun[pdrv], cmd, buff);
-    return res;
+  res = disk.drv[pdrv]->disk_ioctl(disk.lun[pdrv], cmd, buff);
+  return res;
 }
-
 #endif /* _USE_IOCTL == 1 */
 
 /**
@@ -170,8 +172,9 @@ DRESULT disk_ioctl(
   * @param  None
   * @retval Time in DWORD
   */
-__weak DWORD get_fattime(void) {
-    return 0;
+__weak DWORD get_fattime (void)
+{
+  return 0;
 }
 
 /************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/

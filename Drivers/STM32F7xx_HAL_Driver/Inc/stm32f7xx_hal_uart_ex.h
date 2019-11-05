@@ -86,8 +86,7 @@ extern "C" {
   */
 
 /* Initialization and de-initialization functions  ****************************/
-HAL_StatusTypeDef
-HAL_RS485Ex_Init(UART_HandleTypeDef *huart, uint32_t Polarity, uint32_t AssertionTime, uint32_t DeassertionTime);
+HAL_StatusTypeDef HAL_RS485Ex_Init(UART_HandleTypeDef *huart, uint32_t Polarity, uint32_t AssertionTime, uint32_t DeassertionTime);
 
 /**
   * @}
@@ -127,7 +126,7 @@ HAL_StatusTypeDef HAL_MultiProcessorEx_AddressLength_Set(UART_HandleTypeDef *hua
   * @param  __CLOCKSOURCE__ output variable.
   * @retval UART clocking source, written in __CLOCKSOURCE__.
   */
-#define UART_GETCLOCKSOURCE(__HANDLE__, __CLOCKSOURCE__) \
+#define UART_GETCLOCKSOURCE(__HANDLE__,__CLOCKSOURCE__) \
   do {                                                        \
     if((__HANDLE__)->Instance == USART1)                      \
     {                                                         \

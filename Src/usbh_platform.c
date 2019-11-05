@@ -33,9 +33,10 @@
   *           - 0 : VBUS Active
   *           - 1 : VBUS Inactive
   */
-void MX_DriverVbusFS(uint8_t state) {
-    uint8_t data = state;
-    /* USER CODE BEGIN PREPARE_GPIO_DATA_VBUS_FS */
+void MX_DriverVbusFS(uint8_t state)
+{ 
+  uint8_t data = state; 
+  /* USER CODE BEGIN PREPARE_GPIO_DATA_VBUS_FS */
     if (state == 0) {
         /* Drive high Charge pump */
         data = GPIO_PIN_SET;
@@ -43,8 +44,8 @@ void MX_DriverVbusFS(uint8_t state) {
         /* Drive low Charge pump */
         data = GPIO_PIN_RESET;
     }
-    /* USER CODE END PREPARE_GPIO_DATA_VBUS_FS */
-    HAL_GPIO_WritePin(GPIOG, GPIO_PIN_6, (GPIO_PinState) data);
+  /* USER CODE END PREPARE_GPIO_DATA_VBUS_FS */
+  HAL_GPIO_WritePin(GPIOG,GPIO_PIN_6,(GPIO_PinState)data);
 }
 
 /************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/

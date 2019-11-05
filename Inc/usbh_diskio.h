@@ -19,7 +19,7 @@
 #ifndef __USBH_DISKIO_H
 #define __USBH_DISKIO_H
 
-/* USER CODE BEGIN firstSection */
+/* USER CODE BEGIN firstSection */ 
 /* can be used to modify / undefine following code or add new definitions */
 /* USER CODE END firstSection */
 
@@ -29,9 +29,9 @@
 /* Exported types ------------------------------------------------------------*/
 /* Exported constants --------------------------------------------------------*/
 /* Exported functions ------------------------------------------------------- */
-extern const Diskio_drvTypeDef USBH_Driver;
+extern const Diskio_drvTypeDef  USBH_Driver;
 
-/* USER CODE BEGIN lastSection */
+/* USER CODE BEGIN lastSection */ 
 /* can be used to modify / undefine previous code or add new definitions */
 /* USER CODE END lastSection */
 

@@ -22,7 +22,7 @@
 #define __STM32F7xx_HAL_RCC_EX_H
 
 #ifdef __cplusplus
-extern "C" {
+ extern "C" {
 #endif
 
 /* Includes ------------------------------------------------------------------*/
@@ -44,180 +44,184 @@ extern "C" {
 /**
   * @brief  RCC PLL configuration structure definition
   */
-typedef struct {
-    uint32_t PLLState;   /*!< The new state of the PLL.
+typedef struct
+{
+  uint32_t PLLState;   /*!< The new state of the PLL.
                             This parameter can be a value of @ref RCC_PLL_Config                      */
 
-    uint32_t PLLSource;  /*!< RCC_PLLSource: PLL entry clock source.
+  uint32_t PLLSource;  /*!< RCC_PLLSource: PLL entry clock source.
                             This parameter must be a value of @ref RCC_PLL_Clock_Source               */
 
-    uint32_t PLLM;       /*!< PLLM: Division factor for PLL VCO input clock.
+  uint32_t PLLM;       /*!< PLLM: Division factor for PLL VCO input clock.
                             This parameter must be a number between Min_Data = 2 and Max_Data = 63    */
 
-    uint32_t PLLN;       /*!< PLLN: Multiplication factor for PLL VCO output clock.
+  uint32_t PLLN;       /*!< PLLN: Multiplication factor for PLL VCO output clock.
                             This parameter must be a number between Min_Data = 50 and Max_Data = 432  */
 
-    uint32_t PLLP;       /*!< PLLP: Division factor for main system clock (SYSCLK).
+  uint32_t PLLP;       /*!< PLLP: Division factor for main system clock (SYSCLK).
                             This parameter must be a value of @ref RCC_PLLP_Clock_Divider             */
 
-    uint32_t PLLQ;       /*!< PLLQ: Division factor for OTG FS, SDMMC and RNG clocks.
+  uint32_t PLLQ;       /*!< PLLQ: Division factor for OTG FS, SDMMC and RNG clocks.
                             This parameter must be a number between Min_Data = 2 and Max_Data = 15    */
 #if defined (STM32F765xx) || defined (STM32F767xx) || defined (STM32F769xx) || defined (STM32F777xx) || defined (STM32F779xx)
-    uint32_t PLLR;       /*!< PLLR: Division factor for DSI clock.
+  uint32_t PLLR;       /*!< PLLR: Division factor for DSI clock.
                             This parameter must be a number between Min_Data = 2 and Max_Data = 7    */
 #endif /* STM32F767xx || STM32F769xx || STM32F777xx || STM32F779xx */
 
-} RCC_PLLInitTypeDef;
+}RCC_PLLInitTypeDef;
 
 /**
   * @brief  PLLI2S Clock structure definition
   */
-typedef struct {
-    uint32_t PLLI2SN;    /*!< Specifies the multiplication factor for PLLI2S VCO output clock.
+typedef struct
+{
+  uint32_t PLLI2SN;    /*!< Specifies the multiplication factor for PLLI2S VCO output clock.
                             This parameter must be a number between Min_Data = 50 and Max_Data = 432.
                             This parameter will be used only when PLLI2S is selected as Clock Source I2S or SAI */
 
-    uint32_t PLLI2SR;    /*!< Specifies the division factor for I2S clock.
+  uint32_t PLLI2SR;    /*!< Specifies the division factor for I2S clock.
                             This parameter must be a number between Min_Data = 2 and Max_Data = 7.
                             This parameter will be used only when PLLI2S is selected as Clock Source I2S or SAI */
 
-    uint32_t PLLI2SQ;    /*!< Specifies the division factor for SAI1 clock.
+  uint32_t PLLI2SQ;    /*!< Specifies the division factor for SAI1 clock.
                             This parameter must be a number between Min_Data = 2 and Max_Data = 15.
                             This parameter will be used only when PLLI2S is selected as Clock Source SAI */
 
 #if defined (STM32F745xx) || defined (STM32F746xx) || defined (STM32F756xx) || defined (STM32F765xx) || defined (STM32F767xx) || \
     defined (STM32F769xx) || defined (STM32F777xx) || defined (STM32F779xx) || defined (STM32F750xx)
-    uint32_t PLLI2SP;    /*!< Specifies the division factor for SPDIF-RX clock.
+  uint32_t PLLI2SP;    /*!< Specifies the division factor for SPDIF-RX clock.
                             This parameter must be a value of @ref RCCEx_PLLI2SP_Clock_Divider.
                             This parameter will be used only when PLLI2S is selected as Clock Source SPDIF-RX */
 #endif /* STM32F745xx || STM32F746xx || STM32F756xx || STM32F765xx || STM32F767xx || STM32F769xx || STM32F777xx || STM32F779xx || STM32F750xx */
-} RCC_PLLI2SInitTypeDef;
+}RCC_PLLI2SInitTypeDef;
 
 /**
   * @brief  PLLSAI Clock structure definition
   */
-typedef struct {
-    uint32_t PLLSAIN;    /*!< Specifies the multiplication factor for PLLI2S VCO output clock.
+typedef struct
+{
+  uint32_t PLLSAIN;    /*!< Specifies the multiplication factor for PLLI2S VCO output clock.
                             This parameter must be a number between Min_Data = 50 and Max_Data = 432.
                             This parameter will be used only when PLLSAI is selected as Clock Source SAI or LTDC */
 
-    uint32_t PLLSAIQ;    /*!< Specifies the division factor for SAI1 clock.
+  uint32_t PLLSAIQ;    /*!< Specifies the division factor for SAI1 clock.
                             This parameter must be a number between Min_Data = 2 and Max_Data = 15.
                             This parameter will be used only when PLLSAI is selected as Clock Source SAI or LTDC */
 
 #if defined (STM32F745xx) || defined (STM32F746xx) || defined (STM32F756xx) || defined (STM32F765xx) || defined (STM32F767xx) || \
     defined (STM32F769xx) || defined (STM32F777xx) || defined (STM32F779xx) || defined (STM32F750xx)
-    uint32_t PLLSAIR;    /*!< specifies the division factor for LTDC clock
+  uint32_t PLLSAIR;    /*!< specifies the division factor for LTDC clock
                             This parameter must be a number between Min_Data = 2 and Max_Data = 7.
                             This parameter will be used only when PLLSAI is selected as Clock Source LTDC */
 #endif /* STM32F745xx || STM32F746xx || STM32F756xx || STM32F765xx || STM32F767xx || STM32F769xx || STM32F777xx || STM32F779xx || STM32F750xx */
 
-    uint32_t PLLSAIP;    /*!< Specifies the division factor for 48MHz clock.
+  uint32_t PLLSAIP;    /*!< Specifies the division factor for 48MHz clock.
                             This parameter must be a value of @ref RCCEx_PLLSAIP_Clock_Divider
                             This parameter will be used only when PLLSAI is disabled */
-} RCC_PLLSAIInitTypeDef;
+}RCC_PLLSAIInitTypeDef;
 
 /**
   * @brief  RCC extended clocks structure definition
   */
-typedef struct {
-    uint32_t PeriphClockSelection; /*!< The Extended Clock to be configured.
+typedef struct
+{
+  uint32_t PeriphClockSelection; /*!< The Extended Clock to be configured.
                                       This parameter can be a value of @ref RCCEx_Periph_Clock_Selection */
 
-    RCC_PLLI2SInitTypeDef PLLI2S;  /*!< PLL I2S structure parameters.
+  RCC_PLLI2SInitTypeDef PLLI2S;  /*!< PLL I2S structure parameters.
                                       This parameter will be used only when PLLI2S is selected as Clock Source I2S or SAI */
 
-    RCC_PLLSAIInitTypeDef PLLSAI;  /*!< PLL SAI structure parameters.
+  RCC_PLLSAIInitTypeDef PLLSAI;  /*!< PLL SAI structure parameters.
                                       This parameter will be used only when PLLI2S is selected as Clock Source SAI or LTDC */
 
-    uint32_t PLLI2SDivQ;           /*!< Specifies the PLLI2S division factor for SAI1 clock.
+  uint32_t PLLI2SDivQ;           /*!< Specifies the PLLI2S division factor for SAI1 clock.
                                       This parameter must be a number between Min_Data = 1 and Max_Data = 32
                                       This parameter will be used only when PLLI2S is selected as Clock Source SAI */
 
-    uint32_t PLLSAIDivQ;           /*!< Specifies the PLLI2S division factor for SAI1 clock.
+  uint32_t PLLSAIDivQ;           /*!< Specifies the PLLI2S division factor for SAI1 clock.
                                       This parameter must be a number between Min_Data = 1 and Max_Data = 32
                                       This parameter will be used only when PLLSAI is selected as Clock Source SAI */
 
-    uint32_t PLLSAIDivR;           /*!< Specifies the PLLSAI division factor for LTDC clock.
+  uint32_t PLLSAIDivR;           /*!< Specifies the PLLSAI division factor for LTDC clock.
                                       This parameter must be one value of @ref RCCEx_PLLSAI_DIVR */
 
-    uint32_t RTCClockSelection;      /*!< Specifies RTC Clock source Selection.
+  uint32_t RTCClockSelection;      /*!< Specifies RTC Clock source Selection.
                                         This parameter can be a value of @ref RCC_RTC_Clock_Source */
 
-    uint32_t I2sClockSelection;      /*!< Specifies I2S Clock source Selection.
+  uint32_t I2sClockSelection;      /*!< Specifies I2S Clock source Selection.
                                         This parameter can be a value of @ref RCCEx_I2S_Clock_Source */
 
-    uint32_t TIMPresSelection;      /*!< Specifies TIM Clock Prescalers Selection.
+  uint32_t TIMPresSelection;      /*!< Specifies TIM Clock Prescalers Selection.
                                        This parameter can be a value of @ref RCCEx_TIM_Prescaler_Selection */
 
-    uint32_t Sai1ClockSelection;     /*!< Specifies SAI1 Clock Prescalers Selection
+  uint32_t Sai1ClockSelection;     /*!< Specifies SAI1 Clock Prescalers Selection
                                         This parameter can be a value of @ref RCCEx_SAI1_Clock_Source */
 
-    uint32_t Sai2ClockSelection;     /*!< Specifies SAI2 Clock Prescalers Selection
+  uint32_t Sai2ClockSelection;     /*!< Specifies SAI2 Clock Prescalers Selection
                                         This parameter can be a value of @ref RCCEx_SAI2_Clock_Source */
 
-    uint32_t Usart1ClockSelection; /*!< USART1 clock source
+  uint32_t Usart1ClockSelection; /*!< USART1 clock source
                                       This parameter can be a value of @ref RCCEx_USART1_Clock_Source */
 
-    uint32_t Usart2ClockSelection; /*!< USART2 clock source
+  uint32_t Usart2ClockSelection; /*!< USART2 clock source
                                       This parameter can be a value of @ref RCCEx_USART2_Clock_Source */
 
-    uint32_t Usart3ClockSelection; /*!< USART3 clock source
+  uint32_t Usart3ClockSelection; /*!< USART3 clock source
                                       This parameter can be a value of @ref RCCEx_USART3_Clock_Source */
 
-    uint32_t Uart4ClockSelection;  /*!< UART4 clock source
+  uint32_t Uart4ClockSelection;  /*!< UART4 clock source
                                       This parameter can be a value of @ref RCCEx_UART4_Clock_Source */
 
-    uint32_t Uart5ClockSelection;  /*!< UART5 clock source
+  uint32_t Uart5ClockSelection;  /*!< UART5 clock source
                                       This parameter can be a value of @ref RCCEx_UART5_Clock_Source */
 
-    uint32_t Usart6ClockSelection;  /*!< USART6 clock source
+  uint32_t Usart6ClockSelection;  /*!< USART6 clock source
                                       This parameter can be a value of @ref RCCEx_USART6_Clock_Source */
 
-    uint32_t Uart7ClockSelection;  /*!< UART7 clock source
+  uint32_t Uart7ClockSelection;  /*!< UART7 clock source
                                       This parameter can be a value of @ref RCCEx_UART7_Clock_Source */
 
-    uint32_t Uart8ClockSelection;  /*!< UART8 clock source
+  uint32_t Uart8ClockSelection;  /*!< UART8 clock source
                                       This parameter can be a value of @ref RCCEx_UART8_Clock_Source */
 
-    uint32_t I2c1ClockSelection;   /*!< I2C1 clock source
+  uint32_t I2c1ClockSelection;   /*!< I2C1 clock source
                                       This parameter can be a value of @ref RCCEx_I2C1_Clock_Source */
 
-    uint32_t I2c2ClockSelection;   /*!< I2C2 clock source
+  uint32_t I2c2ClockSelection;   /*!< I2C2 clock source
                                       This parameter can be a value of @ref RCCEx_I2C2_Clock_Source */
 
-    uint32_t I2c3ClockSelection;   /*!< I2C3 clock source
+  uint32_t I2c3ClockSelection;   /*!< I2C3 clock source
                                       This parameter can be a value of @ref RCCEx_I2C3_Clock_Source */
 
-    uint32_t I2c4ClockSelection;   /*!< I2C4 clock source
+  uint32_t I2c4ClockSelection;   /*!< I2C4 clock source
                                       This parameter can be a value of @ref RCCEx_I2C4_Clock_Source */
 
-    uint32_t Lptim1ClockSelection;   /*!< Specifies LPTIM1 clock source
+  uint32_t Lptim1ClockSelection;   /*!< Specifies LPTIM1 clock source
                                         This parameter can be a value of @ref RCCEx_LPTIM1_Clock_Source */
 
-    uint32_t CecClockSelection;      /*!< CEC clock source
+  uint32_t CecClockSelection;      /*!< CEC clock source
                                         This parameter can be a value of @ref RCCEx_CEC_Clock_Source */
 
-    uint32_t Clk48ClockSelection;    /*!< Specifies 48Mhz clock source used by USB OTG FS, RNG and SDMMC
+  uint32_t Clk48ClockSelection;    /*!< Specifies 48Mhz clock source used by USB OTG FS, RNG and SDMMC
                                         This parameter can be a value of @ref RCCEx_CLK48_Clock_Source */
 
-    uint32_t Sdmmc1ClockSelection;     /*!< SDMMC1 clock source
+  uint32_t Sdmmc1ClockSelection;     /*!< SDMMC1 clock source
                                         This parameter can be a value of @ref RCCEx_SDMMC1_Clock_Source */
 
-#if defined (STM32F722xx) || defined (STM32F723xx) || defined (STM32F732xx) || defined (STM32F733xx) || defined (STM32F765xx) || \
+#if defined (STM32F722xx) || defined (STM32F723xx) || defined (STM32F732xx) || defined (STM32F733xx) || defined (STM32F765xx) ||\
     defined (STM32F767xx) || defined (STM32F769xx) || defined (STM32F777xx) || defined (STM32F779xx) || defined (STM32F730xx)
-    uint32_t Sdmmc2ClockSelection;     /*!< SDMMC2 clock source
+  uint32_t Sdmmc2ClockSelection;     /*!< SDMMC2 clock source
                                         This parameter can be a value of @ref RCCEx_SDMMC2_Clock_Source */
 #endif /* STM32F722xx || STM32F723xx || STM32F732xx || STM32F733xx || STM32F765xx || STM32F767xx || STM32F769xx || STM32F777xx || STM32F779xx || STM32F730xx */
 
 #if defined (STM32F765xx) || defined (STM32F767xx) || defined (STM32F769xx) || defined (STM32F777xx) || defined (STM32F779xx)
-    uint32_t Dfsdm1ClockSelection;     /*!< DFSDM1 clock source
+  uint32_t Dfsdm1ClockSelection;     /*!< DFSDM1 clock source
                                         This parameter can be a value of @ref RCCEx_DFSDM1_Kernel_Clock_Source */
 
-    uint32_t Dfsdm1AudioClockSelection; /*!< DFSDM1 clock source
+  uint32_t Dfsdm1AudioClockSelection; /*!< DFSDM1 clock source
                                         This parameter can be a value of @ref RCCEx_DFSDM1_AUDIO_Clock_Source */
 #endif /* STM32F767xx || STM32F769xx || STM32F777xx || STM32F779xx */
-} RCC_PeriphCLKInitTypeDef;
+}RCC_PeriphCLKInitTypeDef;
 /**
   * @}
   */
@@ -256,7 +260,7 @@ typedef struct {
 #define RCC_PERIPHCLK_SDMMC1          ((uint32_t)0x00800000U)
 #define RCC_PERIPHCLK_SPDIFRX         ((uint32_t)0x01000000U)
 #define RCC_PERIPHCLK_PLLI2S          ((uint32_t)0x02000000U)
-#if defined (STM32F722xx) || defined (STM32F723xx) || defined (STM32F732xx) || defined (STM32F733xx) || defined (STM32F765xx) || \
+#if defined (STM32F722xx) || defined (STM32F723xx) || defined (STM32F732xx) || defined (STM32F733xx) || defined (STM32F765xx) ||\
     defined (STM32F767xx) || defined (STM32F769xx) || defined (STM32F777xx) || defined (STM32F779xx) || defined (STM32F730xx)
 #define RCC_PERIPHCLK_SDMMC2          ((uint32_t)0x04000000U)
 #endif /* STM32F722xx || STM32F723xx || STM32F732xx || STM32F733xx || STM32F765xx || STM32F767xx || STM32F769xx || STM32F777xx || STM32F779xx || STM32F730xx */
@@ -518,7 +522,7 @@ typedef struct {
   * @}
   */
 
-#if defined (STM32F722xx) || defined (STM32F723xx) || defined (STM32F732xx) || defined (STM32F733xx) || defined (STM32F765xx) || \
+#if defined (STM32F722xx) || defined (STM32F723xx) || defined (STM32F732xx) || defined (STM32F733xx) || defined (STM32F765xx) ||\
     defined (STM32F767xx) || defined (STM32F769xx) || defined (STM32F777xx) || defined (STM32F779xx) || defined (STM32F730xx)
 /** @defgroup RCCEx_SDMMC2_Clock_Source RCCEx SDMMC2 Clock Source
   * @{
@@ -694,8 +698,8 @@ typedef struct {
                                         UNUSED(tmpreg); \
                                       } while(0)
 
-#if defined (STM32F745xx) || defined (STM32F746xx) || defined (STM32F756xx) || defined (STM32F765xx) || \
-    defined (STM32F767xx) || defined (STM32F769xx) || defined (STM32F777xx) || defined (STM32F779xx) || \
+#if defined (STM32F745xx) || defined (STM32F746xx) || defined (STM32F756xx) || defined (STM32F765xx) ||\
+    defined (STM32F767xx) || defined (STM32F769xx) || defined (STM32F777xx) || defined (STM32F779xx) ||\
     defined (STM32F750xx)
 #define __HAL_RCC_GPIOJ_CLK_ENABLE()   do { \
                                         __IO uint32_t tmpreg; \
@@ -736,16 +740,16 @@ typedef struct {
 #define __HAL_RCC_GPIOG_CLK_DISABLE()           (RCC->AHB1ENR &= ~(RCC_AHB1ENR_GPIOGEN))
 #define __HAL_RCC_GPIOH_CLK_DISABLE()           (RCC->AHB1ENR &= ~(RCC_AHB1ENR_GPIOHEN))
 #define __HAL_RCC_GPIOI_CLK_DISABLE()           (RCC->AHB1ENR &= ~(RCC_AHB1ENR_GPIOIEN))
-#if defined (STM32F745xx) || defined (STM32F746xx) || defined (STM32F756xx) || defined (STM32F765xx) || \
-    defined (STM32F767xx) || defined (STM32F769xx) || defined (STM32F777xx) || defined (STM32F779xx) || \
+#if defined (STM32F745xx) || defined (STM32F746xx) || defined (STM32F756xx) || defined (STM32F765xx) ||\
+    defined (STM32F767xx) || defined (STM32F769xx) || defined (STM32F777xx) || defined (STM32F779xx) ||\
     defined (STM32F750xx)
 #define __HAL_RCC_GPIOJ_CLK_DISABLE()           (RCC->AHB1ENR &= ~(RCC_AHB1ENR_GPIOJEN))
 #define __HAL_RCC_GPIOK_CLK_DISABLE()           (RCC->AHB1ENR &= ~(RCC_AHB1ENR_GPIOKEN))
 #define __HAL_RCC_DMA2D_CLK_DISABLE()           (RCC->AHB1ENR &= ~(RCC_AHB1ENR_DMA2DEN))
 #endif /* STM32F745xx || STM32F746xx || STM32F756xx || STM32F765xx || STM32F767xx || STM32F769xx || STM32F777xx || STM32F779xx || STM32F750xx */
 
-#if defined (STM32F745xx) || defined (STM32F746xx) || defined (STM32F756xx) || defined (STM32F765xx) || \
-    defined (STM32F767xx) || defined (STM32F769xx) || defined (STM32F777xx) || defined (STM32F779xx) || \
+#if defined (STM32F745xx) || defined (STM32F746xx) || defined (STM32F756xx) || defined (STM32F765xx) ||\
+    defined (STM32F767xx) || defined (STM32F769xx) || defined (STM32F777xx) || defined (STM32F779xx) ||\
     defined (STM32F750xx)
 /**
   * @brief  Enable ETHERNET clock.
@@ -806,8 +810,8 @@ typedef struct {
   *         is disabled and the application software has to enable this clock before
   *         using it.
   */
-#if defined (STM32F745xx) || defined (STM32F746xx) || defined (STM32F756xx) || defined (STM32F765xx) || \
-    defined (STM32F767xx) || defined (STM32F769xx) || defined (STM32F777xx) || defined (STM32F779xx) || \
+#if defined (STM32F745xx) || defined (STM32F746xx) || defined (STM32F756xx) || defined (STM32F765xx) ||\
+    defined (STM32F767xx) || defined (STM32F769xx) || defined (STM32F777xx) || defined (STM32F779xx) ||\
     defined (STM32F750xx)
 #define __HAL_RCC_DCMI_CLK_ENABLE()   do { \
                                         __IO uint32_t tmpreg; \
@@ -992,8 +996,8 @@ typedef struct {
                                         UNUSED(tmpreg); \
                                       } while(0)
 
-#if defined (STM32F722xx) || defined (STM32F723xx) || defined (STM32F732xx) || defined (STM32F733xx) || \
-    defined (STM32F765xx) || defined (STM32F767xx) || defined (STM32F769xx) || defined (STM32F777xx) || \
+#if defined (STM32F722xx) || defined (STM32F723xx) || defined (STM32F732xx) || defined (STM32F733xx) ||\
+    defined (STM32F765xx) || defined (STM32F767xx) || defined (STM32F769xx) || defined (STM32F777xx) ||\
     defined (STM32F779xx) || defined (STM32F730xx)
 #define __HAL_RCC_RTC_CLK_ENABLE()   do { \
                                         __IO uint32_t tmpreg; \
@@ -1119,8 +1123,8 @@ typedef struct {
                                         UNUSED(tmpreg); \
                                       } while(0)
 
-#if defined (STM32F745xx) || defined (STM32F746xx) || defined (STM32F756xx) || defined (STM32F765xx) || \
-    defined (STM32F767xx) || defined (STM32F769xx) || defined (STM32F777xx) || defined (STM32F779xx) || \
+#if defined (STM32F745xx) || defined (STM32F746xx) || defined (STM32F756xx) || defined (STM32F765xx) ||\
+    defined (STM32F767xx) || defined (STM32F769xx) || defined (STM32F777xx) || defined (STM32F779xx) ||\
     defined (STM32F750xx)
 #define __HAL_RCC_SPDIFRX_CLK_ENABLE()   do { \
                                         __IO uint32_t tmpreg; \
@@ -1165,8 +1169,8 @@ typedef struct {
 #define __HAL_RCC_TIM13_CLK_DISABLE()  (RCC->APB1ENR &= ~(RCC_APB1ENR_TIM13EN))
 #define __HAL_RCC_TIM14_CLK_DISABLE()  (RCC->APB1ENR &= ~(RCC_APB1ENR_TIM14EN))
 #define __HAL_RCC_LPTIM1_CLK_DISABLE() (RCC->APB1ENR &= ~(RCC_APB1ENR_LPTIM1EN))
-#if defined (STM32F722xx) || defined (STM32F723xx) || defined (STM32F732xx) || defined (STM32F733xx) || \
-    defined (STM32F765xx) || defined (STM32F767xx) || defined (STM32F769xx) || defined (STM32F777xx) || \
+#if defined (STM32F722xx) || defined (STM32F723xx) || defined (STM32F732xx) || defined (STM32F733xx) ||\
+    defined (STM32F765xx) || defined (STM32F767xx) || defined (STM32F769xx) || defined (STM32F777xx) ||\
     defined (STM32F779xx) || defined (STM32F730xx)
 #define __HAL_RCC_RTC_CLK_DISABLE()    (RCC->APB1ENR &= ~(RCC_APB1ENR_RTCEN))
 #endif /* STM32F722xx || STM32F723xx || STM32F732xx || STM32F733xx || STM32F765xx || STM32F767xx ||
@@ -1187,8 +1191,8 @@ typedef struct {
 #define __HAL_RCC_DAC_CLK_DISABLE()    (RCC->APB1ENR &= ~(RCC_APB1ENR_DACEN))
 #define __HAL_RCC_UART7_CLK_DISABLE()  (RCC->APB1ENR &= ~(RCC_APB1ENR_UART7EN))
 #define __HAL_RCC_UART8_CLK_DISABLE()  (RCC->APB1ENR &= ~(RCC_APB1ENR_UART8EN))
-#if defined (STM32F745xx) || defined (STM32F746xx) || defined (STM32F756xx) || defined (STM32F765xx) || \
-    defined (STM32F767xx) || defined (STM32F769xx) || defined (STM32F777xx) || defined (STM32F779xx) || \
+#if defined (STM32F745xx) || defined (STM32F746xx) || defined (STM32F756xx) || defined (STM32F765xx) ||\
+    defined (STM32F767xx) || defined (STM32F769xx) || defined (STM32F777xx) || defined (STM32F779xx) ||\
     defined (STM32F750xx)
 #define __HAL_RCC_SPDIFRX_CLK_DISABLE()(RCC->APB1ENR &= ~(RCC_APB1ENR_SPDIFRXEN))
 #define __HAL_RCC_I2C4_CLK_DISABLE()   (RCC->APB1ENR &= ~(RCC_APB1ENR_I2C4EN))
@@ -1233,7 +1237,7 @@ typedef struct {
                                         UNUSED(tmpreg); \
                                       } while(0)
 
-#if defined (STM32F722xx) || defined (STM32F723xx) || defined (STM32F732xx) || defined (STM32F733xx) || defined (STM32F765xx) || \
+#if defined (STM32F722xx) || defined (STM32F723xx) || defined (STM32F732xx) || defined (STM32F733xx) || defined (STM32F765xx) ||\
     defined (STM32F767xx) || defined (STM32F769xx) || defined (STM32F777xx) || defined (STM32F779xx) || defined (STM32F730xx)
 #define __HAL_RCC_SDMMC2_CLK_ENABLE()   do { \
                                         __IO uint32_t tmpreg; \
@@ -1399,7 +1403,7 @@ typedef struct {
 #define __HAL_RCC_TIM8_CLK_DISABLE()   (RCC->APB2ENR &= ~(RCC_APB2ENR_TIM8EN))
 #define __HAL_RCC_USART1_CLK_DISABLE() (RCC->APB2ENR &= ~(RCC_APB2ENR_USART1EN))
 #define __HAL_RCC_USART6_CLK_DISABLE() (RCC->APB2ENR &= ~(RCC_APB2ENR_USART6EN))
-#if defined (STM32F722xx) || defined (STM32F723xx) || defined (STM32F732xx) || defined (STM32F733xx) || defined (STM32F765xx) || \
+#if defined (STM32F722xx) || defined (STM32F723xx) || defined (STM32F732xx) || defined (STM32F733xx) || defined (STM32F765xx) ||\
     defined (STM32F767xx) || defined (STM32F769xx) || defined (STM32F777xx) || defined (STM32F779xx) || defined (STM32F730xx)
 #define __HAL_RCC_SDMMC2_CLK_DISABLE() (RCC->APB2ENR &= ~(RCC_APB2ENR_SDMMC2EN))
 #endif /* STM32F722xx || STM32F723xx || STM32F732xx || STM32F733xx || STM32F765xx || STM32F767xx || STM32F769xx || STM32F777xx || STM32F779xx || STM32F730xx */
@@ -1461,8 +1465,8 @@ typedef struct {
 #define __HAL_RCC_GPIOG_IS_CLK_ENABLED()            ((RCC->AHB1ENR & (RCC_AHB1ENR_GPIOGEN)) != RESET)
 #define __HAL_RCC_GPIOH_IS_CLK_ENABLED()            ((RCC->AHB1ENR & (RCC_AHB1ENR_GPIOHEN)) != RESET)
 #define __HAL_RCC_GPIOI_IS_CLK_ENABLED()            ((RCC->AHB1ENR & (RCC_AHB1ENR_GPIOIEN)) != RESET)
-#if defined (STM32F745xx) || defined (STM32F746xx) || defined (STM32F756xx) || defined (STM32F765xx) || \
-    defined (STM32F767xx) || defined (STM32F769xx) || defined (STM32F777xx) || defined (STM32F779xx) || \
+#if defined (STM32F745xx) || defined (STM32F746xx) || defined (STM32F756xx) || defined (STM32F765xx) ||\
+    defined (STM32F767xx) || defined (STM32F769xx) || defined (STM32F777xx) || defined (STM32F779xx) ||\
     defined (STM32F750xx)
 #define __HAL_RCC_GPIOJ_IS_CLK_ENABLED()            ((RCC->AHB1ENR & (RCC_AHB1ENR_GPIOJEN)) != RESET)
 #define __HAL_RCC_GPIOK_IS_CLK_ENABLED()            ((RCC->AHB1ENR & (RCC_AHB1ENR_GPIOKEN)) != RESET)
@@ -1483,16 +1487,16 @@ typedef struct {
 #define __HAL_RCC_GPIOG_IS_CLK_DISABLED()           ((RCC->AHB1ENR & (RCC_AHB1ENR_GPIOGEN)) == RESET)
 #define __HAL_RCC_GPIOH_IS_CLK_DISABLED()           ((RCC->AHB1ENR & (RCC_AHB1ENR_GPIOHEN)) == RESET)
 #define __HAL_RCC_GPIOI_IS_CLK_DISABLED()           ((RCC->AHB1ENR & (RCC_AHB1ENR_GPIOIEN)) == RESET)
-#if defined (STM32F745xx) || defined (STM32F746xx) || defined (STM32F756xx) || defined (STM32F765xx) || \
-    defined (STM32F767xx) || defined (STM32F769xx) || defined (STM32F777xx) || defined (STM32F779xx) || \
+#if defined (STM32F745xx) || defined (STM32F746xx) || defined (STM32F756xx) || defined (STM32F765xx) ||\
+    defined (STM32F767xx) || defined (STM32F769xx) || defined (STM32F777xx) || defined (STM32F779xx) ||\
     defined (STM32F750xx)
 #define __HAL_RCC_GPIOJ_IS_CLK_DISABLED()           ((RCC->AHB1ENR & (RCC_AHB1ENR_GPIOJEN)) == RESET)
 #define __HAL_RCC_GPIOK_IS_CLK_DISABLED()           ((RCC->AHB1ENR & (RCC_AHB1ENR_GPIOKEN)) == RESET)
 #define __HAL_RCC_DMA2D_IS_CLK_DISABLED()           ((RCC->AHB1ENR & (RCC_AHB1ENR_DMA2DEN)) == RESET)
 #endif /* STM32F745xx || STM32F746xx || STM32F756xx || STM32F765xx || STM32F767xx || STM32F769xx || STM32F777xx || STM32F779xx || STM32F750xx */
 
-#if defined (STM32F745xx) || defined (STM32F746xx) || defined (STM32F756xx) || defined (STM32F765xx) || \
-    defined (STM32F767xx) || defined (STM32F769xx) || defined (STM32F777xx) || defined (STM32F779xx) || \
+#if defined (STM32F745xx) || defined (STM32F746xx) || defined (STM32F756xx) || defined (STM32F765xx) ||\
+    defined (STM32F767xx) || defined (STM32F769xx) || defined (STM32F777xx) || defined (STM32F779xx) ||\
     defined (STM32F750xx)
 /**
   * @brief  Enable ETHERNET clock.
@@ -1540,8 +1544,8 @@ typedef struct {
 #define __HAL_RCC_AES_IS_CLK_DISABLED()  ((RCC->AHB2ENR & (RCC_AHB2ENR_AESEN)) == RESET)
 #endif /* STM32F732xx || STM32F733xx || STM32F730xx */
 
-#if defined (STM32F745xx) || defined (STM32F746xx) || defined (STM32F756xx) || defined (STM32F765xx) || \
-    defined (STM32F767xx) || defined (STM32F769xx) || defined (STM32F777xx) || defined (STM32F779xx) || \
+#if defined (STM32F745xx) || defined (STM32F746xx) || defined (STM32F756xx) || defined (STM32F765xx) ||\
+    defined (STM32F767xx) || defined (STM32F769xx) || defined (STM32F777xx) || defined (STM32F779xx) ||\
     defined (STM32F750xx)
 #define __HAL_RCC_DCMI_IS_CLK_ENABLED()        ((RCC->AHB2ENR & (RCC_AHB2ENR_DCMIEN)) != RESET)
 #define __HAL_RCC_DCMI_IS_CLK_DISABLED()       ((RCC->AHB2ENR & (RCC_AHB2ENR_DCMIEN)) == RESET)
@@ -1621,8 +1625,8 @@ typedef struct {
 #define __HAL_RCC_DAC_IS_CLK_DISABLED()    ((RCC->APB1ENR & (RCC_APB1ENR_DACEN)) == RESET)
 #define __HAL_RCC_UART7_IS_CLK_DISABLED()  ((RCC->APB1ENR & (RCC_APB1ENR_UART7EN)) == RESET)
 #define __HAL_RCC_UART8_IS_CLK_DISABLED()  ((RCC->APB1ENR & (RCC_APB1ENR_UART8EN)) == RESET)
-#if defined (STM32F745xx) || defined (STM32F746xx) || defined (STM32F756xx) || defined (STM32F765xx) || \
-    defined (STM32F767xx) || defined (STM32F769xx) || defined (STM32F777xx) || defined (STM32F779xx) || \
+#if defined (STM32F745xx) || defined (STM32F746xx) || defined (STM32F756xx) || defined (STM32F765xx) ||\
+    defined (STM32F767xx) || defined (STM32F769xx) || defined (STM32F777xx) || defined (STM32F779xx) ||\
     defined (STM32F750xx)
 #define __HAL_RCC_SPDIFRX_IS_CLK_ENABLED() ((RCC->APB1ENR & (RCC_APB1ENR_SPDIFRXEN)) != RESET)
 #define __HAL_RCC_CAN2_IS_CLK_ENABLED()    ((RCC->APB1ENR & (RCC_APB1ENR_CAN2EN)) != RESET)
@@ -1635,8 +1639,8 @@ typedef struct {
 #define __HAL_RCC_I2C4_IS_CLK_DISABLED()   ((RCC->APB1ENR & (RCC_APB1ENR_I2C4EN)) == RESET)
 #endif /* STM32F745xx || STM32F746xx || STM32F756xx || STM32F765xx || STM32F767xx || STM32F769xx || STM32F777xx || STM32F779xx || STM32F750xx */
 
-#if defined (STM32F722xx) || defined (STM32F723xx) || defined (STM32F732xx) || defined (STM32F733xx) || \
-    defined (STM32F765xx) || defined (STM32F767xx) || defined (STM32F769xx) || defined (STM32F777xx) || \
+#if defined (STM32F722xx) || defined (STM32F723xx) || defined (STM32F732xx) || defined (STM32F733xx) ||\
+    defined (STM32F765xx) || defined (STM32F767xx) || defined (STM32F769xx) || defined (STM32F777xx) ||\
     defined (STM32F779xx) || defined (STM32F730xx)
 #define __HAL_RCC_RTC_IS_CLK_ENABLED()     ((RCC->APB1ENR & (RCC_APB1ENR_RTCEN)) != RESET)
 #define __HAL_RCC_RTC_IS_CLK_DISABLED()    ((RCC->APB1ENR & (RCC_APB1ENR_RTCEN)) == RESET)
@@ -1671,7 +1675,7 @@ typedef struct {
 #if defined (STM32F769xx) || defined (STM32F779xx)
 #define __HAL_RCC_DSI_IS_CLK_ENABLED()     ((RCC->APB2ENR & (RCC_APB2ENR_DSIEN)) != RESET)
 #endif /* STM32F769xx || STM32F779xx */
-#if defined (STM32F722xx) || defined (STM32F723xx) || defined (STM32F732xx) || defined (STM32F733xx) || defined (STM32F765xx) || \
+#if defined (STM32F722xx) || defined (STM32F723xx) || defined (STM32F732xx) || defined (STM32F733xx) || defined (STM32F765xx) ||\
     defined (STM32F767xx) || defined (STM32F769xx) || defined (STM32F777xx) || defined (STM32F779xx) || defined (STM32F730xx)
 #define __HAL_RCC_SDMMC2_IS_CLK_ENABLED()  ((RCC->APB2ENR & (RCC_APB2ENR_SDMMC2EN)) != RESET)
 #endif /* STM32F722xx || STM32F723xx || STM32F732xx || STM32F733xx || STM32F765xx || STM32F767xx || STM32F769xx || STM32F777xx || STM32F779xx || STM32F730xx */
@@ -1706,7 +1710,7 @@ typedef struct {
 #if defined (STM32F769xx) || defined (STM32F779xx)
 #define __HAL_RCC_DSI_IS_CLK_DISABLED()    ((RCC->APB2ENR & (RCC_APB2ENR_DSIEN)) == RESET)
 #endif /* STM32F769xx || STM32F779xx */
-#if defined (STM32F722xx) || defined (STM32F723xx) || defined (STM32F732xx) || defined (STM32F733xx) || defined (STM32F765xx) || \
+#if defined (STM32F722xx) || defined (STM32F723xx) || defined (STM32F732xx) || defined (STM32F733xx) || defined (STM32F765xx) ||\
     defined (STM32F767xx) || defined (STM32F769xx) || defined (STM32F777xx) || defined (STM32F779xx) || defined (STM32F730xx)
 #define __HAL_RCC_SDMMC2_IS_CLK_DISABLED() ((RCC->APB2ENR & (RCC_APB2ENR_SDMMC2EN)) == RESET)
 #endif /* STM32F722xx || STM32F723xx || STM32F732xx || STM32F733xx || STM32F765xx || STM32F767xx || STM32F769xx || STM32F777xx || STM32F779xx || STM32F730xx */
@@ -1753,8 +1757,8 @@ typedef struct {
 #define __HAL_RCC_GPIOH_RELEASE_RESET() (RCC->AHB1RSTR &= ~(RCC_AHB1RSTR_GPIOHRST))
 #define __HAL_RCC_GPIOI_RELEASE_RESET() (RCC->AHB1RSTR &= ~(RCC_AHB1RSTR_GPIOIRST))
 
-#if defined (STM32F745xx) || defined (STM32F746xx) || defined (STM32F756xx) || defined (STM32F765xx) || \
-    defined (STM32F767xx) || defined (STM32F769xx) || defined (STM32F777xx) || defined (STM32F779xx) || \
+#if defined (STM32F745xx) || defined (STM32F746xx) || defined (STM32F756xx) || defined (STM32F765xx) ||\
+    defined (STM32F767xx) || defined (STM32F769xx) || defined (STM32F777xx) || defined (STM32F779xx) ||\
     defined (STM32F750xx)
 #define __HAL_RCC_DMA2D_FORCE_RESET()    (RCC->AHB1RSTR |= (RCC_AHB1RSTR_DMA2DRST))
 #define __HAL_RCC_ETHMAC_FORCE_RESET()   (RCC->AHB1RSTR |= (RCC_AHB1RSTR_ETHMACRST))
@@ -1794,8 +1798,8 @@ typedef struct {
 #define __HAL_RCC_AES_RELEASE_RESET() (RCC->AHB2RSTR &= ~(RCC_AHB2RSTR_AESRST))
 #endif /* STM32F732xx || STM32F733xx || STM32F730xx */
 
-#if defined (STM32F745xx) || defined (STM32F746xx) || defined (STM32F756xx) || defined (STM32F765xx) || \
-    defined (STM32F767xx) || defined (STM32F769xx) || defined (STM32F777xx) || defined (STM32F779xx) || \
+#if defined (STM32F745xx) || defined (STM32F746xx) || defined (STM32F756xx) || defined (STM32F765xx) ||\
+    defined (STM32F767xx) || defined (STM32F769xx) || defined (STM32F777xx) || defined (STM32F779xx) ||\
     defined (STM32F750xx)
 #define __HAL_RCC_DCMI_FORCE_RESET()   (RCC->AHB2RSTR |= (RCC_AHB2RSTR_DCMIRST))
 #define __HAL_RCC_DCMI_RELEASE_RESET() (RCC->AHB2RSTR &= ~(RCC_AHB2RSTR_DCMIRST))
@@ -1867,8 +1871,8 @@ typedef struct {
 #define __HAL_RCC_UART7_RELEASE_RESET()  (RCC->APB1RSTR &= ~(RCC_APB1RSTR_UART7RST))
 #define __HAL_RCC_UART8_RELEASE_RESET()  (RCC->APB1RSTR &= ~(RCC_APB1RSTR_UART8RST))
 
-#if defined (STM32F745xx) || defined (STM32F746xx) || defined (STM32F756xx) || defined (STM32F765xx) || \
-    defined (STM32F767xx) || defined (STM32F769xx) || defined (STM32F777xx) || defined (STM32F779xx) || \
+#if defined (STM32F745xx) || defined (STM32F746xx) || defined (STM32F756xx) || defined (STM32F765xx) ||\
+    defined (STM32F767xx) || defined (STM32F769xx) || defined (STM32F777xx) || defined (STM32F779xx) ||\
     defined (STM32F750xx)
 #define __HAL_RCC_SPDIFRX_FORCE_RESET()  (RCC->APB1RSTR |= (RCC_APB1RSTR_SPDIFRXRST))
 #define __HAL_RCC_I2C4_FORCE_RESET()     (RCC->APB1RSTR |= (RCC_APB1RSTR_I2C4RST))
@@ -1932,7 +1936,7 @@ typedef struct {
 #define __HAL_RCC_DSI_RELEASE_RESET()    (RCC->APB2RSTR &= ~(RCC_APB2RSTR_DSIRST))
 #endif /* STM32F769xx || STM32F779xx */
 
-#if defined (STM32F722xx) || defined (STM32F723xx) || defined (STM32F732xx) || defined (STM32F733xx) || defined (STM32F765xx) || \
+#if defined (STM32F722xx) || defined (STM32F723xx) || defined (STM32F732xx) || defined (STM32F733xx) || defined (STM32F765xx) ||\
     defined (STM32F767xx) || defined (STM32F769xx) || defined (STM32F777xx) || defined (STM32F779xx) || defined (STM32F730xx)
 #define __HAL_RCC_SDMMC2_FORCE_RESET()   (RCC->APB2RSTR |= (RCC_APB2RSTR_SDMMC2RST))
 #define __HAL_RCC_SDMMC2_RELEASE_RESET() (RCC->APB2RSTR &= ~(RCC_APB2RSTR_SDMMC2RST))
@@ -1997,8 +2001,8 @@ typedef struct {
 #define __HAL_RCC_GPIOH_CLK_SLEEP_DISABLE()     (RCC->AHB1LPENR &= ~(RCC_AHB1LPENR_GPIOHLPEN))
 #define __HAL_RCC_GPIOI_CLK_SLEEP_DISABLE()     (RCC->AHB1LPENR &= ~(RCC_AHB1LPENR_GPIOILPEN))
 
-#if defined (STM32F745xx) || defined (STM32F746xx) || defined (STM32F756xx) || defined (STM32F765xx) || \
-    defined (STM32F767xx) || defined (STM32F769xx) || defined (STM32F777xx) || defined (STM32F779xx) || \
+#if defined (STM32F745xx) || defined (STM32F746xx) || defined (STM32F756xx) || defined (STM32F765xx) ||\
+    defined (STM32F767xx) || defined (STM32F769xx) || defined (STM32F777xx) || defined (STM32F779xx) ||\
     defined (STM32F750xx)
 #define __HAL_RCC_DMA2D_CLK_SLEEP_ENABLE()      (RCC->AHB1LPENR |= (RCC_AHB1LPENR_DMA2DLPEN))
 #define __HAL_RCC_ETHMAC_CLK_SLEEP_ENABLE()     (RCC->AHB1LPENR |= (RCC_AHB1LPENR_ETHMACLPEN))
@@ -2023,8 +2027,8 @@ typedef struct {
   * @note   After wakeup from SLEEP mode, the peripheral clock is enabled again.
   * @note   By default, all peripheral clocks are enabled during SLEEP mode.
   */
-#if defined (STM32F745xx) || defined (STM32F746xx) || defined (STM32F756xx) || defined (STM32F765xx) || \
-    defined (STM32F767xx) || defined (STM32F769xx) || defined (STM32F777xx) || defined (STM32F779xx) || \
+#if defined (STM32F745xx) || defined (STM32F746xx) || defined (STM32F756xx) || defined (STM32F765xx) ||\
+    defined (STM32F767xx) || defined (STM32F769xx) || defined (STM32F777xx) || defined (STM32F779xx) ||\
     defined (STM32F750xx)
 #define __HAL_RCC_DCMI_CLK_SLEEP_ENABLE()        (RCC->AHB2LPENR |= (RCC_AHB2LPENR_DCMILPEN))
 #define __HAL_RCC_DCMI_CLK_SLEEP_DISABLE()       (RCC->AHB2LPENR &= ~(RCC_AHB2LPENR_DCMILPEN))
@@ -2126,16 +2130,16 @@ typedef struct {
 #define __HAL_RCC_UART7_CLK_SLEEP_DISABLE()  (RCC->APB1LPENR &= ~(RCC_APB1LPENR_UART7LPEN))
 #define __HAL_RCC_UART8_CLK_SLEEP_DISABLE()  (RCC->APB1LPENR &= ~(RCC_APB1LPENR_UART8LPEN))
 
-#if defined (STM32F722xx) || defined (STM32F723xx) || defined (STM32F732xx) || defined (STM32F733xx) || \
-    defined (STM32F765xx) || defined (STM32F767xx) || defined (STM32F769xx) || defined (STM32F777xx) || \
+#if defined (STM32F722xx) || defined (STM32F723xx) || defined (STM32F732xx) || defined (STM32F733xx) ||\
+    defined (STM32F765xx) || defined (STM32F767xx) || defined (STM32F769xx) || defined (STM32F777xx) ||\
     defined (STM32F779xx) || defined (STM32F730xx)
 #define __HAL_RCC_RTC_CLK_SLEEP_ENABLE()     (RCC->APB1LPENR |= (RCC_APB1LPENR_RTCLPEN))
 #define __HAL_RCC_RTC_CLK_SLEEP_DISABLE()    (RCC->APB1LPENR &= ~(RCC_APB1LPENR_RTCLPEN))
 #endif /* STM32F722xx || STM32F723xx || STM32F732xx || STM32F733xx || STM32F765xx || STM32F767xx ||
           STM32F769xx || STM32F777xx || STM32F779xx || STM32F730xx */
 
-#if defined (STM32F745xx) || defined (STM32F746xx) || defined (STM32F756xx) || defined (STM32F765xx) || \
-    defined (STM32F767xx) || defined (STM32F769xx) || defined (STM32F777xx) || defined (STM32F779xx) || \
+#if defined (STM32F745xx) || defined (STM32F746xx) || defined (STM32F756xx) || defined (STM32F765xx) ||\
+    defined (STM32F767xx) || defined (STM32F769xx) || defined (STM32F777xx) || defined (STM32F779xx) ||\
     defined (STM32F750xx)
 #define __HAL_RCC_SPDIFRX_CLK_SLEEP_ENABLE() (RCC->APB1LPENR |= (RCC_APB1LPENR_SPDIFRXLPEN))
 #define __HAL_RCC_I2C4_CLK_SLEEP_ENABLE()    (RCC->APB1LPENR |= (RCC_APB1LPENR_I2C4LPEN))
@@ -2190,7 +2194,7 @@ typedef struct {
 #define __HAL_RCC_SPI5_CLK_SLEEP_DISABLE()   (RCC->APB2LPENR &= ~(RCC_APB2LPENR_SPI5LPEN))
 #define __HAL_RCC_SAI1_CLK_SLEEP_DISABLE()   (RCC->APB2LPENR &= ~(RCC_APB2LPENR_SAI1LPEN))
 #define __HAL_RCC_SAI2_CLK_SLEEP_DISABLE()   (RCC->APB2LPENR &= ~(RCC_APB2LPENR_SAI2LPEN))
-#if defined (STM32F746xx) || defined (STM32F756xx) || defined (STM32F767xx) || defined (STM32F769xx) || defined (STM32F777xx) || defined (STM32F779xx) || defined (STM32F750xx)
+#if defined (STM32F746xx) || defined (STM32F756xx) || defined (STM32F767xx) || defined (STM32F769xx) || defined (STM32F777xx) || defined (STM32F779xx)|| defined (STM32F750xx)
 #define __HAL_RCC_LTDC_CLK_SLEEP_DISABLE()   (RCC->APB2LPENR &= ~(RCC_APB2LPENR_LTDCLPEN))
 #endif /* STM32F746xx || STM32F756xx || STM32F767xx || STM32F769xx || STM32F777xx || STM32F779xx || STM32F750xx  */
 #if defined (STM32F769xx) || defined (STM32F779xx)
@@ -2203,14 +2207,14 @@ typedef struct {
 #define __HAL_RCC_DFSDM1_CLK_SLEEP_DISABLE()  (RCC->APB2LPENR &= ~(RCC_APB2LPENR_DFSDM1LPEN))
 #define __HAL_RCC_MDIO_CLK_SLEEP_DISABLE()   (RCC->APB2LPENR &= ~(RCC_APB2LPENR_MDIOLPEN))
 #endif /* STM32F767xx || STM32F769xx || STM32F777xx || STM32F779xx */
-#if defined (STM32F722xx) || defined (STM32F723xx) || defined (STM32F732xx) || defined (STM32F733xx) || defined (STM32F765xx) || \
+#if defined (STM32F722xx) || defined (STM32F723xx) || defined (STM32F732xx) || defined (STM32F733xx) || defined (STM32F765xx) ||\
     defined (STM32F767xx) || defined (STM32F769xx) || defined (STM32F777xx) || defined (STM32F779xx) || defined (STM32F730xx)
 #define __HAL_RCC_SDMMC2_CLK_SLEEP_ENABLE()  (RCC->APB2LPENR |= (RCC_APB2LPENR_SDMMC2LPEN))
 #define __HAL_RCC_SDMMC2_CLK_SLEEP_DISABLE() (RCC->APB2LPENR &= ~(RCC_APB2LPENR_SDMMC2LPEN))
 #endif /* STM32F722xx || STM32F723xx || STM32F732xx || STM32F733xx || STM32F765xx || STM32F767xx || STM32F769xx || STM32F777xx || STM32F779xx || STM32F730xx */
 
-#if defined (STM32F745xx) || defined (STM32F746xx) || defined (STM32F756xx) || defined (STM32F765xx) || \
-    defined (STM32F767xx) || defined (STM32F769xx) || defined (STM32F777xx) || defined (STM32F779xx) || \
+#if defined (STM32F745xx) || defined (STM32F746xx) || defined (STM32F756xx) || defined (STM32F765xx) ||\
+    defined (STM32F767xx) || defined (STM32F769xx) || defined (STM32F777xx) || defined (STM32F779xx) ||\
     defined (STM32F750xx)
 #define __HAL_RCC_SPI6_CLK_SLEEP_ENABLE()    (RCC->APB2LPENR |= (RCC_APB2LPENR_SPI6LPEN))
 #define __HAL_RCC_SPI6_CLK_SLEEP_DISABLE()   (RCC->APB2LPENR &= ~(RCC_APB2LPENR_SPI6LPEN))
@@ -2272,8 +2276,8 @@ typedef struct {
 #define __HAL_RCC_GPIOH_IS_CLK_SLEEP_DISABLED()     ((RCC->AHB1LPENR & (RCC_AHB1LPENR_GPIOHLPEN)) == RESET)
 #define __HAL_RCC_GPIOI_IS_CLK_SLEEP_DISABLED()     ((RCC->AHB1LPENR & (RCC_AHB1LPENR_GPIOILPEN)) == RESET)
 
-#if defined (STM32F745xx) || defined (STM32F746xx) || defined (STM32F756xx) || defined (STM32F765xx) || \
-    defined (STM32F767xx) || defined (STM32F769xx) || defined (STM32F777xx) || defined (STM32F779xx) || \
+#if defined (STM32F745xx) || defined (STM32F746xx) || defined (STM32F756xx) || defined (STM32F765xx) ||\
+    defined (STM32F767xx) || defined (STM32F769xx) || defined (STM32F777xx) || defined (STM32F779xx) ||\
     defined (STM32F750xx)
 #define __HAL_RCC_DMA2D_IS_CLK_SLEEP_ENABLED()      ((RCC->AHB1LPENR & (RCC_AHB1LPENR_DMA2DLPEN)) != RESET)
 #define __HAL_RCC_ETHMAC_IS_CLK_SLEEP_ENABLED()     ((RCC->AHB1LPENR & (RCC_AHB1LPENR_ETHMACLPEN)) != RESET)
@@ -2298,8 +2302,8 @@ typedef struct {
   * @note   After wakeup from SLEEP mode, the peripheral clock is enabled again.
   * @note   By default, all peripheral clocks are enabled during SLEEP mode.
   */
-#if defined (STM32F745xx) || defined (STM32F746xx) || defined (STM32F756xx) || defined (STM32F765xx) || \
-    defined (STM32F767xx) || defined (STM32F769xx) || defined (STM32F777xx) || defined (STM32F779xx) || \
+#if defined (STM32F745xx) || defined (STM32F746xx) || defined (STM32F756xx) || defined (STM32F765xx) ||\
+    defined (STM32F767xx) || defined (STM32F769xx) || defined (STM32F777xx) || defined (STM32F779xx) ||\
     defined (STM32F750xx)
 #define __HAL_RCC_DCMI_IS_CLK_SLEEP_ENABLED()        ((RCC->AHB2LPENR & (RCC_AHB2LPENR_DCMILPEN)) != RESET)
 #define __HAL_RCC_DCMI_IS_CLK_SLEEP_DISABLED()       ((RCC->AHB2LPENR & (RCC_AHB2LPENR_DCMILPEN)) == RESET)
@@ -2357,8 +2361,8 @@ typedef struct {
 #define __HAL_RCC_TIM13_IS_CLK_SLEEP_ENABLED()   ((RCC->APB1LPENR & (RCC_APB1LPENR_TIM13LPEN)) != RESET)
 #define __HAL_RCC_TIM14_IS_CLK_SLEEP_ENABLED()   ((RCC->APB1LPENR & (RCC_APB1LPENR_TIM14LPEN)) != RESET)
 #define __HAL_RCC_LPTIM1_IS_CLK_SLEEP_ENABLED()  ((RCC->APB1LPENR & (RCC_APB1LPENR_LPTIM1LPEN)) != RESET)
-#if defined (STM32F722xx) || defined (STM32F723xx) || defined (STM32F732xx) || defined (STM32F733xx) || \
-    defined (STM32F765xx) || defined (STM32F767xx) || defined (STM32F769xx) || defined (STM32F777xx) || \
+#if defined (STM32F722xx) || defined (STM32F723xx) || defined (STM32F732xx) || defined (STM32F733xx) ||\
+    defined (STM32F765xx) || defined (STM32F767xx) || defined (STM32F769xx) || defined (STM32F777xx) ||\
     defined (STM32F779xx) || defined (STM32F730xx)
 #define __HAL_RCC_RTC_IS_CLK_SLEEP_ENABLED()     ((RCC->APB1LPENR & (RCC_APB1LPENR_RTCLPEN)) != RESET)
 #endif /* STM32F722xx || STM32F723xx || STM32F732xx || STM32F733xx || STM32F765xx || STM32F767xx ||
@@ -2390,8 +2394,8 @@ typedef struct {
 #define __HAL_RCC_TIM13_IS_CLK_SLEEP_DISABLED()  ((RCC->APB1LPENR & (RCC_APB1LPENR_TIM13LPEN)) == RESET)
 #define __HAL_RCC_TIM14_IS_CLK_SLEEP_DISABLED()  ((RCC->APB1LPENR & (RCC_APB1LPENR_TIM14LPEN)) == RESET)
 #define __HAL_RCC_LPTIM1_IS_CLK_SLEEP_DISABLED() ((RCC->APB1LPENR & (RCC_APB1LPENR_LPTIM1LPEN)) == RESET)
-#if defined (STM32F722xx) || defined (STM32F723xx) || defined (STM32F732xx) || defined (STM32F733xx) || \
-    defined (STM32F765xx) || defined (STM32F767xx) || defined (STM32F769xx) || defined (STM32F777xx) || \
+#if defined (STM32F722xx) || defined (STM32F723xx) || defined (STM32F732xx) || defined (STM32F733xx) ||\
+    defined (STM32F765xx) || defined (STM32F767xx) || defined (STM32F769xx) || defined (STM32F777xx) ||\
     defined (STM32F779xx) || defined (STM32F730xx)
 #define __HAL_RCC_RTC_IS_CLK_SLEEP_DISABLED()    ((RCC->APB1LPENR & (RCC_APB1LPENR_RTCLPEN)) == RESET)
 #endif /* STM32F722xx || STM32F723xx || STM32F732xx || STM32F733xx || STM32F765xx || STM32F767xx ||
@@ -2413,8 +2417,8 @@ typedef struct {
 #define __HAL_RCC_UART7_IS_CLK_SLEEP_DISABLED()  ((RCC->APB1LPENR & (RCC_APB1LPENR_UART7LPEN)) == RESET)
 #define __HAL_RCC_UART8_IS_CLK_SLEEP_DISABLED()  ((RCC->APB1LPENR & (RCC_APB1LPENR_UART8LPEN)) == RESET)
 
-#if defined (STM32F745xx) || defined (STM32F746xx) || defined (STM32F756xx) || defined (STM32F765xx) || \
-    defined (STM32F767xx) || defined (STM32F769xx) || defined (STM32F777xx) || defined (STM32F779xx) || \
+#if defined (STM32F745xx) || defined (STM32F746xx) || defined (STM32F756xx) || defined (STM32F765xx) ||\
+    defined (STM32F767xx) || defined (STM32F769xx) || defined (STM32F777xx) || defined (STM32F779xx) ||\
     defined (STM32F750xx)
 #define __HAL_RCC_SPDIFRX_IS_CLK_SLEEP_ENABLED() ((RCC->APB1LPENR & (RCC_APB1LPENR_SPDIFRXLPEN)) != RESET)
 #define __HAL_RCC_I2C4_IS_CLK_SLEEP_ENABLED()    ((RCC->APB1LPENR & (RCC_APB1LPENR_I2C4LPEN)) != RESET)
@@ -2455,7 +2459,7 @@ typedef struct {
 #if defined (STM32F769xx) || defined (STM32F779xx)
 #define __HAL_RCC_DSI_IS_CLK_SLEEP_ENABLED()     ((RCC->APB2LPENR & (RCC_APB2LPENR_DSILPEN)) != RESET)
 #endif /* STM32F769xx || STM32F779xx */
-#if defined (STM32F722xx) || defined (STM32F723xx) || defined (STM32F732xx) || defined (STM32F733xx) || defined (STM32F765xx) || \
+#if defined (STM32F722xx) || defined (STM32F723xx) || defined (STM32F732xx) || defined (STM32F733xx) || defined (STM32F765xx) ||\
     defined (STM32F767xx) || defined (STM32F769xx) || defined (STM32F777xx) || defined (STM32F779xx) || defined (STM32F730xx)
 #define __HAL_RCC_SDMMC2_IS_CLK_SLEEP_ENABLED()  ((RCC->APB2LPENR & (RCC_APB2LPENR_SDMMC2LPEN)) != RESET)
 #endif /* STM32F722xx || STM32F723xx || STM32F732xx || STM32F733xx || STM32F765xx || STM32F767xx || STM32F769xx || STM32F777xx || STM32F779xx || STM32F730xx */
@@ -2486,7 +2490,7 @@ typedef struct {
 #if defined (STM32F769xx) || defined (STM32F779xx)
 #define __HAL_RCC_DSI_IS_CLK_SLEEP_DISABLED()     ((RCC->APB2LPENR & (RCC_APB2LPENR_DSILPEN)) == RESET)
 #endif /* STM32F769xx || STM32F779xx */
-#if defined (STM32F722xx) || defined (STM32F723xx) || defined (STM32F732xx) || defined (STM32F733xx) || defined (STM32F765xx) || \
+#if defined (STM32F722xx) || defined (STM32F723xx) || defined (STM32F732xx) || defined (STM32F733xx) || defined (STM32F765xx) ||\
     defined (STM32F767xx) || defined (STM32F769xx) || defined (STM32F777xx) || defined (STM32F779xx) || defined (STM32F730xx)
 #define __HAL_RCC_SDMMC2_IS_CLK_SLEEP_DISABLED()  ((RCC->APB2LPENR & (RCC_APB2LPENR_SDMMC2LPEN)) == RESET)
 #endif /* STM32F722xx || STM32F723xx || STM32F732xx || STM32F733xx || STM32F765xx || STM32F767xx || STM32F769xx || STM32F777xx || STM32F779xx || STM32F730xx */
@@ -2495,8 +2499,8 @@ typedef struct {
 #define __HAL_RCC_MDIO_IS_CLK_SLEEP_DISABLED()    ((RCC->APB2LPENR & (RCC_APB2LPENR_MDIOLPEN)) == RESET)
 #endif /* STM32F767xx || STM32F769xx || STM32F777xx || STM32F779xx */
 
-#if defined (STM32F745xx) || defined (STM32F746xx) || defined (STM32F756xx) || defined (STM32F765xx) || \
-    defined (STM32F767xx) || defined (STM32F769xx) || defined (STM32F777xx) || defined (STM32F779xx) || \
+#if defined (STM32F745xx) || defined (STM32F746xx) || defined (STM32F756xx) || defined (STM32F765xx) ||\
+    defined (STM32F767xx) || defined (STM32F769xx) || defined (STM32F777xx) || defined (STM32F779xx) ||\
     defined (STM32F750xx)
 #define __HAL_RCC_SPI6_IS_CLK_SLEEP_ENABLED()    ((RCC->APB2LPENR & (RCC_APB2LPENR_SPI6LPEN)) != RESET)
 #define __HAL_RCC_SPI6_IS_CLK_SLEEP_DISABLED()   ((RCC->APB2LPENR & (RCC_APB2LPENR_SPI6LPEN)) == RESET)
@@ -2536,7 +2540,7 @@ typedef struct {
   * @param  __PLLR__ specifies the division factor for DSI clock
   *         This parameter must be a number between Min_Data = 2 and Max_Data = 7.
   */
-#define __HAL_RCC_PLL_CONFIG(__RCC_PLLSource__, __PLLM__, __PLLN__, __PLLP__, __PLLQ__, __PLLR__)  \
+#define __HAL_RCC_PLL_CONFIG(__RCC_PLLSource__, __PLLM__, __PLLN__, __PLLP__, __PLLQ__,__PLLR__)  \
                             (RCC->PLLCFGR = ((__RCC_PLLSource__) | (__PLLM__)                   | \
                             ((__PLLN__) << RCC_PLLCFGR_PLLN_Pos)                      | \
                             ((((__PLLP__) >> 1) -1) << RCC_PLLCFGR_PLLP_Pos)          | \
@@ -2700,8 +2704,8 @@ typedef struct {
   */
 #define __HAL_RCC_PLLSAI_PLLSAICLKDIVQ_CONFIG(__PLLSAIDivQ__) (MODIFY_REG(RCC->DCKCFGR1, RCC_DCKCFGR1_PLLSAIDIVQ, ((__PLLSAIDivQ__)-1)<<8))
 
-#if defined (STM32F745xx) || defined (STM32F746xx) || defined (STM32F756xx) || defined (STM32F765xx) || \
-    defined (STM32F767xx) || defined (STM32F769xx) || defined (STM32F777xx) || defined (STM32F779xx) || \
+#if defined (STM32F745xx) || defined (STM32F746xx) || defined (STM32F756xx) || defined (STM32F765xx) ||\
+    defined (STM32F767xx) || defined (STM32F769xx) || defined (STM32F777xx) || defined (STM32F779xx) ||\
     defined (STM32F750xx)
 /** @brief  Macro to configure the LTDC clock Divider coming from PLLSAI.
   * @note   This function must be called before enabling the PLLSAI.
@@ -2947,15 +2951,15 @@ typedef struct {
   */
 #define __HAL_RCC_GET_USART3_SOURCE() ((uint32_t)(READ_BIT(RCC->DCKCFGR2, RCC_DCKCFGR2_USART3SEL)))
 
-/** @brief  Macro to configure the UART4 clock (UART4CLK).
- *
- * @param  __UART4_CLKSOURCE__ specifies the UART4 clock source.
- *          This parameter can be one of the following values:
- *            @arg RCC_UART4CLKSOURCE_PCLK1: PCLK1 selected as UART4 clock
- *            @arg RCC_UART4CLKSOURCE_HSI: HSI selected as UART4 clock
- *            @arg RCC_UART4CLKSOURCE_SYSCLK: System Clock selected as UART4 clock
- *            @arg RCC_UART4CLKSOURCE_LSE: LSE selected as UART4 clock
- */
+ /** @brief  Macro to configure the UART4 clock (UART4CLK).
+  *
+  * @param  __UART4_CLKSOURCE__ specifies the UART4 clock source.
+  *          This parameter can be one of the following values:
+  *            @arg RCC_UART4CLKSOURCE_PCLK1: PCLK1 selected as UART4 clock
+  *            @arg RCC_UART4CLKSOURCE_HSI: HSI selected as UART4 clock
+  *            @arg RCC_UART4CLKSOURCE_SYSCLK: System Clock selected as UART4 clock
+  *            @arg RCC_UART4CLKSOURCE_LSE: LSE selected as UART4 clock
+  */
 #define __HAL_RCC_UART4_CONFIG(__UART4_CLKSOURCE__) \
                   MODIFY_REG(RCC->DCKCFGR2, RCC_DCKCFGR2_UART4SEL, (uint32_t)(__UART4_CLKSOURCE__))
 
@@ -2968,15 +2972,15 @@ typedef struct {
   */
 #define __HAL_RCC_GET_UART4_SOURCE() ((uint32_t)(READ_BIT(RCC->DCKCFGR2, RCC_DCKCFGR2_UART4SEL)))
 
-/** @brief  Macro to configure the UART5 clock (UART5CLK).
- *
- * @param  __UART5_CLKSOURCE__ specifies the UART5 clock source.
- *          This parameter can be one of the following values:
- *            @arg RCC_UART5CLKSOURCE_PCLK1: PCLK1 selected as UART5 clock
- *            @arg RCC_UART5CLKSOURCE_HSI: HSI selected as UART5 clock
- *            @arg RCC_UART5CLKSOURCE_SYSCLK: System Clock selected as UART5 clock
- *            @arg RCC_UART5CLKSOURCE_LSE: LSE selected as UART5 clock
- */
+ /** @brief  Macro to configure the UART5 clock (UART5CLK).
+  *
+  * @param  __UART5_CLKSOURCE__ specifies the UART5 clock source.
+  *          This parameter can be one of the following values:
+  *            @arg RCC_UART5CLKSOURCE_PCLK1: PCLK1 selected as UART5 clock
+  *            @arg RCC_UART5CLKSOURCE_HSI: HSI selected as UART5 clock
+  *            @arg RCC_UART5CLKSOURCE_SYSCLK: System Clock selected as UART5 clock
+  *            @arg RCC_UART5CLKSOURCE_LSE: LSE selected as UART5 clock
+  */
 #define __HAL_RCC_UART5_CONFIG(__UART5_CLKSOURCE__) \
                   MODIFY_REG(RCC->DCKCFGR2, RCC_DCKCFGR2_UART5SEL, (uint32_t)(__UART5_CLKSOURCE__))
 
@@ -2989,15 +2993,15 @@ typedef struct {
   */
 #define __HAL_RCC_GET_UART5_SOURCE() ((uint32_t)(READ_BIT(RCC->DCKCFGR2, RCC_DCKCFGR2_UART5SEL)))
 
-/** @brief  Macro to configure the USART6 clock (USART6CLK).
- *
- * @param  __USART6_CLKSOURCE__ specifies the USART6 clock source.
- *          This parameter can be one of the following values:
- *            @arg RCC_USART6CLKSOURCE_PCLK1: PCLK1 selected as USART6 clock
- *            @arg RCC_USART6CLKSOURCE_HSI: HSI selected as USART6 clock
- *            @arg RCC_USART6CLKSOURCE_SYSCLK: System Clock selected as USART6 clock
- *            @arg RCC_USART6CLKSOURCE_LSE: LSE selected as USART6 clock
- */
+ /** @brief  Macro to configure the USART6 clock (USART6CLK).
+  *
+  * @param  __USART6_CLKSOURCE__ specifies the USART6 clock source.
+  *          This parameter can be one of the following values:
+  *            @arg RCC_USART6CLKSOURCE_PCLK1: PCLK1 selected as USART6 clock
+  *            @arg RCC_USART6CLKSOURCE_HSI: HSI selected as USART6 clock
+  *            @arg RCC_USART6CLKSOURCE_SYSCLK: System Clock selected as USART6 clock
+  *            @arg RCC_USART6CLKSOURCE_LSE: LSE selected as USART6 clock
+  */
 #define __HAL_RCC_USART6_CONFIG(__USART6_CLKSOURCE__) \
                   MODIFY_REG(RCC->DCKCFGR2, RCC_DCKCFGR2_USART6SEL, (uint32_t)(__USART6_CLKSOURCE__))
 
@@ -3010,15 +3014,15 @@ typedef struct {
   */
 #define __HAL_RCC_GET_USART6_SOURCE() ((uint32_t)(READ_BIT(RCC->DCKCFGR2, RCC_DCKCFGR2_USART6SEL)))
 
-/** @brief  Macro to configure the UART7 clock (UART7CLK).
- *
- * @param  __UART7_CLKSOURCE__ specifies the UART7 clock source.
- *          This parameter can be one of the following values:
- *            @arg RCC_UART7CLKSOURCE_PCLK1: PCLK1 selected as UART7 clock
- *            @arg RCC_UART7CLKSOURCE_HSI: HSI selected as UART7 clock
- *            @arg RCC_UART7CLKSOURCE_SYSCLK: System Clock selected as UART7 clock
- *            @arg RCC_UART7CLKSOURCE_LSE: LSE selected as UART7 clock
- */
+ /** @brief  Macro to configure the UART7 clock (UART7CLK).
+  *
+  * @param  __UART7_CLKSOURCE__ specifies the UART7 clock source.
+  *          This parameter can be one of the following values:
+  *            @arg RCC_UART7CLKSOURCE_PCLK1: PCLK1 selected as UART7 clock
+  *            @arg RCC_UART7CLKSOURCE_HSI: HSI selected as UART7 clock
+  *            @arg RCC_UART7CLKSOURCE_SYSCLK: System Clock selected as UART7 clock
+  *            @arg RCC_UART7CLKSOURCE_LSE: LSE selected as UART7 clock
+  */
 #define __HAL_RCC_UART7_CONFIG(__UART7_CLKSOURCE__) \
                   MODIFY_REG(RCC->DCKCFGR2, RCC_DCKCFGR2_UART7SEL, (uint32_t)(__UART7_CLKSOURCE__))
 
@@ -3124,7 +3128,7 @@ typedef struct {
   */
 #define __HAL_RCC_GET_SDMMC1_SOURCE() ((uint32_t)(READ_BIT(RCC->DCKCFGR2, RCC_DCKCFGR2_SDMMC1SEL)))
 
-#if defined (STM32F722xx) || defined (STM32F723xx) || defined (STM32F732xx) || defined (STM32F733xx) || defined (STM32F765xx) || \
+#if defined (STM32F722xx) || defined (STM32F723xx) || defined (STM32F732xx) || defined (STM32F733xx) || defined (STM32F765xx) ||\
     defined (STM32F767xx) || defined (STM32F769xx) || defined (STM32F777xx) || defined (STM32F779xx) || defined (STM32F730xx)
 /** @brief  Macro to configure the SDMMC2 clock (SDMMC2CLK).
   * @param  __SDMMC2_CLKSOURCE__ specifies the SDMMC2 clock source.
@@ -3201,18 +3205,12 @@ typedef struct {
 /** @addtogroup RCCEx_Exported_Functions_Group1
   * @{
   */
-HAL_StatusTypeDef HAL_RCCEx_PeriphCLKConfig(RCC_PeriphCLKInitTypeDef *PeriphClkInit);
-
-void HAL_RCCEx_GetPeriphCLKConfig(RCC_PeriphCLKInitTypeDef *PeriphClkInit);
-
+HAL_StatusTypeDef HAL_RCCEx_PeriphCLKConfig(RCC_PeriphCLKInitTypeDef  *PeriphClkInit);
+void HAL_RCCEx_GetPeriphCLKConfig(RCC_PeriphCLKInitTypeDef  *PeriphClkInit);
 uint32_t HAL_RCCEx_GetPeriphCLKFreq(uint32_t PeriphClk);
-
-HAL_StatusTypeDef HAL_RCCEx_EnablePLLI2S(RCC_PLLI2SInitTypeDef *PLLI2SInit);
-
+HAL_StatusTypeDef HAL_RCCEx_EnablePLLI2S(RCC_PLLI2SInitTypeDef  *PLLI2SInit);
 HAL_StatusTypeDef HAL_RCCEx_DisablePLLI2S(void);
-
-HAL_StatusTypeDef HAL_RCCEx_EnablePLLSAI(RCC_PLLSAIInitTypeDef *PLLSAIInit);
-
+HAL_StatusTypeDef HAL_RCCEx_EnablePLLSAI(RCC_PLLSAIInitTypeDef  *PLLSAIInit);
 HAL_StatusTypeDef HAL_RCCEx_DisablePLLSAI(void);
 /**
   * @}
@@ -3461,7 +3459,7 @@ HAL_StatusTypeDef HAL_RCCEx_DisablePLLSAI(void);
                (((VALUE) == RCC_TIMPRES_DESACTIVATED) || \
                 ((VALUE) == RCC_TIMPRES_ACTIVATED))
 
-#if defined (STM32F722xx) || defined (STM32F723xx) || defined (STM32F732xx) || defined (STM32F733xx) || defined (STM32F745xx) || \
+#if defined (STM32F722xx) || defined (STM32F723xx) || defined (STM32F732xx) || defined (STM32F733xx) || defined (STM32F745xx) ||\
     defined (STM32F746xx) || defined (STM32F756xx) || defined (STM32F730xx) || defined (STM32F750xx)
 #define IS_RCC_SAI1CLKSOURCE(SOURCE)  (((SOURCE) == RCC_SAI1CLKSOURCE_PLLSAI) || \
                                        ((SOURCE) == RCC_SAI1CLKSOURCE_PLLI2S) || \
@@ -3491,7 +3489,7 @@ HAL_StatusTypeDef HAL_RCCEx_DisablePLLSAI(void);
                                              ((SOURCE) == RCC_DFSDM1AUDIOCLKSOURCE_SAI2))
 #endif /* STM32F767xx || STM32F769xx || STM32F777xx || STM32F779xx */
 
-#if defined (STM32F722xx) || defined (STM32F723xx) || defined (STM32F732xx) || defined (STM32F733xx) || defined (STM32F765xx) || \
+#if defined (STM32F722xx) || defined (STM32F723xx) || defined (STM32F732xx) || defined (STM32F733xx) || defined (STM32F765xx) ||\
     defined (STM32F767xx) || defined (STM32F769xx) || defined (STM32F777xx) || defined (STM32F779xx) || defined (STM32F730xx)
 #define IS_RCC_SDMMC2CLKSOURCE(SOURCE)  (((SOURCE) == RCC_SDMMC2CLKSOURCE_SYSCLK) || \
                                          ((SOURCE) == RCC_SDMMC2CLKSOURCE_CLK48))

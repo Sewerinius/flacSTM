@@ -22,7 +22,7 @@
 #define __USBH_MSC_BOT_H
 
 #ifdef __cplusplus
-extern "C" {
+ extern "C" {
 #endif
 
 /* Includes ------------------------------------------------------------------*/
@@ -51,81 +51,87 @@ extern "C" {
   */
 
 typedef enum {
-    BOT_OK = 0,
-    BOT_FAIL = 1,
-    BOT_PHASE_ERROR = 2,
-    BOT_BUSY = 3
+  BOT_OK          = 0,
+  BOT_FAIL        = 1,
+  BOT_PHASE_ERROR = 2,
+  BOT_BUSY        = 3
 }
-        BOT_StatusTypeDef;
+BOT_StatusTypeDef;
 
 typedef enum {
-    BOT_CMD_IDLE = 0,
-    BOT_CMD_SEND,
-    BOT_CMD_WAIT,
+  BOT_CMD_IDLE  = 0,
+  BOT_CMD_SEND,
+  BOT_CMD_WAIT,
 }
-        BOT_CMDStateTypeDef;
+BOT_CMDStateTypeDef;
 
 /* CSW Status Definitions */
+typedef enum
+{
+
+   BOT_CSW_CMD_PASSED   =        0x00,
+   BOT_CSW_CMD_FAILED   =        0x01,
+   BOT_CSW_PHASE_ERROR  =        0x02,
+}
+BOT_CSWStatusTypeDef;
+
 typedef enum {
-
-    BOT_CSW_CMD_PASSED = 0x00,
-    BOT_CSW_CMD_FAILED = 0x01,
-    BOT_CSW_PHASE_ERROR = 0x02,
+  BOT_SEND_CBW  = 1,
+  BOT_SEND_CBW_WAIT,
+  BOT_DATA_IN,
+  BOT_DATA_IN_WAIT,
+  BOT_DATA_OUT,
+  BOT_DATA_OUT_WAIT,
+  BOT_RECEIVE_CSW,
+  BOT_RECEIVE_CSW_WAIT,
+  BOT_ERROR_IN,
+  BOT_ERROR_OUT,
+  BOT_UNRECOVERED_ERROR
 }
-        BOT_CSWStatusTypeDef;
+BOT_StateTypeDef;
 
-typedef enum {
-    BOT_SEND_CBW = 1,
-    BOT_SEND_CBW_WAIT,
-    BOT_DATA_IN,
-    BOT_DATA_IN_WAIT,
-    BOT_DATA_OUT,
-    BOT_DATA_OUT_WAIT,
-    BOT_RECEIVE_CSW,
-    BOT_RECEIVE_CSW_WAIT,
-    BOT_ERROR_IN,
-    BOT_ERROR_OUT,
-    BOT_UNRECOVERED_ERROR
+typedef union
+{
+  struct __CBW
+  {
+    uint32_t Signature;
+    uint32_t Tag;
+    uint32_t DataTransferLength;
+    uint8_t  Flags;
+    uint8_t  LUN;
+    uint8_t  CBLength;
+    uint8_t  CB[16];
+  }field;
+  uint8_t data[31];
 }
-        BOT_StateTypeDef;
+BOT_CBWTypeDef;
 
-typedef union {
-    struct __CBW {
-        uint32_t Signature;
-        uint32_t Tag;
-        uint32_t DataTransferLength;
-        uint8_t Flags;
-        uint8_t LUN;
-        uint8_t CBLength;
-        uint8_t CB[16];
-    } field;
-    uint8_t data[31];
+typedef union
+{
+  struct __CSW
+  {
+    uint32_t Signature;
+    uint32_t Tag;
+    uint32_t DataResidue;
+    uint8_t  Status;
+  }field;
+  uint8_t data[13];
 }
-        BOT_CBWTypeDef;
+BOT_CSWTypeDef;
 
-typedef union {
-    struct __CSW {
-        uint32_t Signature;
-        uint32_t Tag;
-        uint32_t DataResidue;
-        uint8_t Status;
-    } field;
-    uint8_t data[13];
+typedef struct
+{
+  uint32_t                   data[16];
+  BOT_StateTypeDef           state;
+  BOT_StateTypeDef           prev_state;
+  BOT_CMDStateTypeDef        cmd_state;
+  BOT_CBWTypeDef             cbw;
+  uint8_t                    Reserved1;
+  BOT_CSWTypeDef             csw;
+  uint8_t                    Reserved2[3];
+  uint8_t                    *pbuf;
 }
-        BOT_CSWTypeDef;
-
-typedef struct {
-    uint32_t data[16];
-    BOT_StateTypeDef state;
-    BOT_StateTypeDef prev_state;
-    BOT_CMDStateTypeDef cmd_state;
-    BOT_CBWTypeDef cbw;
-    uint8_t Reserved1;
-    BOT_CSWTypeDef csw;
-    uint8_t Reserved2[3];
-    uint8_t *pbuf;
-}
-        BOT_HandleTypeDef;
+BOT_HandleTypeDef;
 
 /**
   * @}
@@ -141,6 +147,7 @@ typedef struct {
 #define BOT_CSW_SIGNATURE            0x53425355U
 #define BOT_CBW_LENGTH               31U
 #define BOT_CSW_LENGTH               13U
+
 
 
 #define BOT_SEND_CSW_DISABLE         0U
@@ -184,13 +191,10 @@ typedef struct {
   * @{
   */
 USBH_StatusTypeDef USBH_MSC_BOT_REQ_Reset(USBH_HandleTypeDef *phost);
-
 USBH_StatusTypeDef USBH_MSC_BOT_REQ_GetMaxLUN(USBH_HandleTypeDef *phost, uint8_t *Maxlun);
 
 USBH_StatusTypeDef USBH_MSC_BOT_Init(USBH_HandleTypeDef *phost);
-
-USBH_StatusTypeDef USBH_MSC_BOT_Process(USBH_HandleTypeDef *phost, uint8_t lun);
-
+USBH_StatusTypeDef USBH_MSC_BOT_Process (USBH_HandleTypeDef *phost, uint8_t lun);
 USBH_StatusTypeDef USBH_MSC_BOT_Error(USBH_HandleTypeDef *phost, uint8_t lun);
 
 
