@@ -193,7 +193,7 @@ int main(void)
     MX_USB_HOST_Process();
 
     /* USER CODE BEGIN 3 */
-        graphicsTest(14, 1);
+        graphicsTest(1, 0);
 //        graphicsTest(13, 1);
         char c = 'f';
         DIR dir;

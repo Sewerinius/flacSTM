@@ -59,7 +59,7 @@ set(HEX_FILE $${PROJECT_BINARY_DIR}/$${PROJECT_NAME}.hex)
 set(BIN_FILE $${PROJECT_BINARY_DIR}/$${PROJECT_NAME}.bin)
 
 set(WITH_OGG OFF CACHE BOOL "enable ogg functionality" FORCE)
-add_subdirectory(../../flac/flac flac-build)
+add_subdirectory(libs/flac flac-build)
 
 #Begin edit
 #include(CheckIncludeFile)
