@@ -187,7 +187,7 @@ void ILI9341_Enable(void) {
 void ILI9341_Init(void) {
 
     ILI9341_Enable();
-    ILI9341_SPI_Init();
+//    ILI9341_SPI_Init();
     ILI9341_Reset();
 
 //SOFTWARE RESET

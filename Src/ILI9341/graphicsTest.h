@@ -8,9 +8,10 @@
 #include <stdio.h>
 #include <tim.h>
 #include <rng.h>
-#include "snow_tiger.h"
 #include "ILI9341_STM32_Driver.h"
 #include "ILI9341_GFX.h"
 #include "ILI9341_Touchscreen.h"
+
+void graphicsTest(int, int);
 
 #endif //CLIONTEST_GRAPHICSTEST_H

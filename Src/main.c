@@ -30,11 +30,14 @@
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
-#include <stdlib.h>
 #include <stdio.h>
-#include <ILI9341_STM32_Driver.h>
+//#include <ili9341.h>
+//#include <ili9341_touch.h>
+//#include <ILI9341_STM32_Driver.h>
 #include <usbh_platform.h>
 #include <decoder.h>
+#include <FLAC/all.h>
+#include <graphicsTest.h>
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -160,24 +163,26 @@ int main(void)
   MX_USB_HOST_Init();
   /* USER CODE BEGIN 2 */
 
-//    SCB_Type* scb = SCB;
-//    ILI9341_Init();
+    SCB_Type* scb = SCB;
+
+//    ILI9341_Unselect();
+//    ILI9341_TouchUnselect();
+
+    ILI9341_Init();
+
+//    ILI9341_Fill_Screen(BLACK);
+
     printf("\r\nr%dp%d\r\n", ((SCB->CPUID >> 20) & 0x0F), (SCB->CPUID & 0x0F));
     MX_DriverVbusFS(0);
+    printf("Waiting for USB");
     while (Appli_state != APPLICATION_READY) {
+        if(Appli_state == APPLICATION_IDLE) printf(".");
         MX_USB_HOST_Process();
     }
 
-//    char buff[256];
-//    DIR d;
-//    FRESULT fresult;
-//    strcpy(buff, "/");
-//    fresult = scan_files(buff);
-////    fresult = f_opendir(&d, "/");
-////        fresult = f_open(&fil, "Test.txt", FA_CREATE_ALWAYS | FA_WRITE);
-//    printf("fopendir: %d\n\r", fresult);
 
-    FLACdecode("/queenBohemianRhapsody");
+
+//    FLACdecode("/weWillRockYou.flac");
 
   /* USER CODE END 2 */
 
@@ -188,23 +193,20 @@ int main(void)
     MX_USB_HOST_Process();
 
     /* USER CODE BEGIN 3 */
+        graphicsTest(14, 1);
+//        graphicsTest(13, 1);
         char c = 'f';
         DIR dir;
         FIL fil;
 //        fresult = f_opendir(&dir, USBHPath);
 //        fresult = f_open(&fil, "Test.txt", FA_CREATE_ALWAYS | FA_WRITE);
 //        printf("fopen: %d\n\r", fresult);
-//        HAL_UART_Transmit(&huart3, &c, 1, 0xFFFF);
-//        printf("test\n\r");
 //        printf("%s\n\r", USBHPath);
 //        FRESULT mountResult = f_mount(&USBHFatFS, USBHPath, 0);
 //        printf("%d\n\r", mountResult);
 //        if (f_mount(&USBHFatFS, USBHPath, 0) != FR_OK) {
 //            Error_Handler();
 //        }
-
-//        printf("Appli_state: %d\r\n", Appli_state);
-//        HAL_Delay(100);
 
 //        while (1) {
 //            int rnd = random() & 7;

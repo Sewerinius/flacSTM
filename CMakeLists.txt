@@ -27,6 +27,9 @@ SET(COMMON_FLAGS
     "-mcpu=cortex-m7 ${FPU_FLAGS} -mthumb -mthumb-interwork -ffunction-sections -fdata-sections \
     -g -fno-common -fmessage-length=0 -specs=nosys.specs -specs=nano.specs")
 
+#MY
+SET(COMMON_FLAGS "${COMMON_FLAGS} -u _printf_float")
+
 SET(CMAKE_CXX_FLAGS_INIT "${COMMON_FLAGS} -std=c++11")
 SET(CMAKE_C_FLAGS_INIT "${COMMON_FLAGS} -std=gnu99")
 SET(CMAKE_EXE_LINKER_FLAGS_INIT "-Wl,-gc-sections,--print-memory-usage -T ${LINKER_SCRIPT}")
@@ -40,11 +43,12 @@ add_definitions(-D__weak=__attribute__\(\(weak\)\) -D__packed=__attribute__\(\(_
 file(GLOB_RECURSE SOURCES "Middlewares/*.*" "startup/*.*" "Drivers/*.*" "Src/*.*")
 
 file(GLOB_RECURSE LCD_SOURCES Src/ILI9341/*.c)
+file(GLOB_RECURSE LCD_SOURCES2 Src/ILI9341-2/*.c)
 #file(GLOB_RECURSE FLAC_SOURCES Src/flac/*.c)
 set(FLAC_SOURCES Src/flac/bitreader.c Src/flac/decoder3.c)
-set(SOURCES ${SOURCES} ${LCD_SOURCES} ${FLAC_SOURCES})
+set(SOURCES ${SOURCES} ${LCD_SOURCES} ${FLAC_SOURCES} ${LCD_SOURCES2})
 
-include_directories(Inc Drivers/STM32F7xx_HAL_Driver/Inc Drivers/STM32F7xx_HAL_Driver/Inc/Legacy Drivers/CMSIS/Device/ST/STM32F7xx/Include Drivers/CMSIS/Include Middlewares/Third_Party/FatFs/src Middlewares/ST/STM32_USB_Host_Library/Core/Inc Middlewares/ST/STM32_USB_Host_Library/Class/MSC/Inc Src/ILI9341 Src/flac)
+include_directories(Inc Drivers/STM32F7xx_HAL_Driver/Inc Drivers/STM32F7xx_HAL_Driver/Inc/Legacy Drivers/CMSIS/Device/ST/STM32F7xx/Include Drivers/CMSIS/Include Middlewares/Third_Party/FatFs/src Middlewares/ST/STM32_USB_Host_Library/Core/Inc Middlewares/ST/STM32_USB_Host_Library/Class/MSC/Inc Src/ILI9341 Src/flac Src/ILI9341-2)
 
 add_executable(${PROJECT_NAME}.elf ${SOURCES} ${LINKER_SCRIPT})
 
@@ -54,8 +58,20 @@ set(CMAKE_EXE_LINKER_FLAGS
 set(HEX_FILE ${PROJECT_BINARY_DIR}/${PROJECT_NAME}.hex)
 set(BIN_FILE ${PROJECT_BINARY_DIR}/${PROJECT_NAME}.bin)
 
+set(WITH_OGG OFF CACHE BOOL "enable ogg functionality" FORCE)
+add_subdirectory(../../flac/flac flac-build)
+
+#Begin edit
+#include(CheckIncludeFile)
+#include(CheckFunctionExists)
+#include(CheckSymbolExists)
+#add_subdirectory(../../flac/flac/src flac-build)
+#include_directories("../../flac/flac/include")
+#End edit
+
 add_custom_command(TARGET ${PROJECT_NAME}.elf POST_BUILD
         COMMAND ${CMAKE_OBJCOPY} -Oihex $<TARGET_FILE:${PROJECT_NAME}.elf> ${HEX_FILE}
         COMMAND ${CMAKE_OBJCOPY} -Obinary $<TARGET_FILE:${PROJECT_NAME}.elf> ${BIN_FILE}
         COMMENT "Building ${HEX_FILE}
 Building ${BIN_FILE}")
+target_link_libraries(${PROJECT_NAME}.elf FLAC)

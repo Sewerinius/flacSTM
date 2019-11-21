@@ -82,6 +82,8 @@ if(TP_Touchpad_Pressed())
 #include "ILI9341_Touchscreen.h"
 #include "stm32f7xx_hal.h"
 
+#include "delay.h"
+
 //Internal Touchpad command, do not call directly
 uint16_t TP_Read(void) {
     uint8_t i = 16;
@@ -91,7 +93,9 @@ uint16_t TP_Read(void) {
         value <<= 1;
 
         HAL_GPIO_WritePin(TP_CLK_PORT, TP_CLK_PIN, GPIO_PIN_SET);
+        delayUs(1);
         HAL_GPIO_WritePin(TP_CLK_PORT, TP_CLK_PIN, GPIO_PIN_RESET);
+        delayUs(1);
 
         if (HAL_GPIO_ReadPin(TP_MISO_PORT, TP_MISO_PIN) != 0) {
             value++;
@@ -126,14 +130,18 @@ void TP_Write(uint8_t value) {
 
 //Read coordinates of touchscreen press. Position[0] = X, Position[1] = Y
 uint8_t TP_Read_Coordinates(uint16_t Coordinates[2]) {
-    HAL_GPIO_WritePin(TP_CLK_PORT, TP_CLK_PIN, GPIO_PIN_SET);
-    HAL_GPIO_WritePin(TP_MOSI_PORT, TP_MOSI_PIN, GPIO_PIN_SET);
-    HAL_GPIO_WritePin(TP_CS_PORT, TP_CS_PIN, GPIO_PIN_SET);
+//    HAL_GPIO_WritePin(TP_CLK_PORT, TP_CLK_PIN, GPIO_PIN_SET);
+//    HAL_GPIO_WritePin(TP_MOSI_PORT, TP_MOSI_PIN, GPIO_PIN_SET);
+//    HAL_GPIO_WritePin(TP_CS_PORT, TP_CS_PIN, GPIO_PIN_SET);
+
+    HAL_GPIO_WritePin(TP_CLK_PORT, TP_CLK_PIN, GPIO_PIN_RESET);
+    HAL_GPIO_WritePin(TP_MOSI_PORT, TP_MOSI_PIN, GPIO_PIN_RESET);
+    HAL_GPIO_WritePin(TP_CS_PORT, TP_CS_PIN, GPIO_PIN_RESET);
 
 
-    uint32_t avg_x, avg_y = 0;
-    uint16_t rawx, rawy = 0;
-    uint32_t calculating_x, calculating_y = 0;
+    uint32_t avg_x = 0, avg_y = 0;
+    uint16_t rawx = 0, rawy = 0;
+    uint32_t calculating_x = 0, calculating_y = 0;
 
     uint32_t samples = NO_OF_POSITION_SAMPLES;
     uint32_t counted_samples = 0;
@@ -144,12 +152,15 @@ uint8_t TP_Read_Coordinates(uint16_t Coordinates[2]) {
     while ((samples > 0) && (HAL_GPIO_ReadPin(TP_IRQ_PORT, TP_IRQ_PIN) == 0)) {
         TP_Write(CMD_RDY);
 
+        delayUs(6);
         rawy = TP_Read();
         avg_y += rawy;
         calculating_y += rawy;
 
 
         TP_Write(CMD_RDX);
+
+        HAL_Delay(1);
         rawx = TP_Read();
         avg_x += rawx;
         calculating_x += rawx;
