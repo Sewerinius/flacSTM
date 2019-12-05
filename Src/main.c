@@ -83,6 +83,10 @@ void MX_USB_HOST_Process(void);
 PUTCHAR_PROTOTYPE
 //int __io_putchar(int ch)
 {
+    if (ch == '\n') {
+        char ch = '\r';
+        HAL_UART_Transmit(&huart3, (uint8_t *) &ch, 1, 0xFFFFFFFF);
+    }
     HAL_UART_Transmit(&huart3, (uint8_t *) &ch, 1, 0xFFFFFFFF);
     return 0;
 }
