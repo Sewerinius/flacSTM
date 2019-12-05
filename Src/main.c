@@ -165,6 +165,7 @@ int main(void)
   MX_TIM1_Init();
   MX_FATFS_Init();
   MX_USB_HOST_Init();
+  MX_SPI2_Init();
   /* USER CODE BEGIN 2 */
 
     SCB_Type* scb = SCB;
@@ -184,8 +185,6 @@ int main(void)
         MX_USB_HOST_Process();
     }
 
-
-
 //    FLACdecode("/weWillRockYou.flac");
 
   /* USER CODE END 2 */
@@ -197,8 +196,8 @@ int main(void)
     MX_USB_HOST_Process();
 
     /* USER CODE BEGIN 3 */
-        graphicsTest(1, 0);
-//        graphicsTest(13, 1);
+//        graphicsTest(1, 0);
+        graphicsTest(14, 1);
         char c = 'f';
         DIR dir;
         FIL fil;

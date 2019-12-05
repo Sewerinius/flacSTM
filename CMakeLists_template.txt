@@ -43,10 +43,9 @@ add_definitions(${defines})
 file(GLOB_RECURSE SOURCES ${sources})
 
 file(GLOB_RECURSE LCD_SOURCES Src/ILI9341/*.c)
-file(GLOB_RECURSE LCD_SOURCES2 Src/ILI9341-2/*.c)
 #file(GLOB_RECURSE FLAC_SOURCES Src/flac/*.c)
 set(FLAC_SOURCES Src/flac/bitreader.c Src/flac/decoder3.c)
-set(SOURCES $${SOURCES} $${LCD_SOURCES} $${FLAC_SOURCES} $${LCD_SOURCES2})
+set(SOURCES $${SOURCES} $${LCD_SOURCES} $${FLAC_SOURCES})
 
 include_directories(${includes} Src/ILI9341 Src/flac Src/ILI9341-2)
 

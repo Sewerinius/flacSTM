@@ -5,6 +5,7 @@
 
 #include "graphicsTest.h"
 #include "snow_tiger.h"
+#include "ili9341_touch.h"
 //#include <ili9341_touch.h>
 
 void graphicsTest(int i, int breaking) {
@@ -396,70 +397,18 @@ void graphicsTest(int i, int breaking) {
             ILI9341_Draw_Text("Touch to draw", 10, 30, BLACK, 2, WHITE);
             ILI9341_Set_Rotation(SCREEN_VERTICAL_1);
 
-            uint16_t position_array[2] = {0, 0};
-//            TP_Read_Coordinates(position_array);
-//            printf("%d, %d\n\r", position_array[0], position_array[1]);
+            uint16_t x_pos = 0;
+            uint16_t y_pos = 0;
+
+            ILI9341_TouchGetCoordinates(&x_pos, &y_pos);
+            printf("%d, %d\n\r", x_pos, y_pos);
 
             while (1) {
-
-                if (TP_Touchpad_Pressed()) {
-
-                    uint16_t x_pos = 0;
-                    uint16_t y_pos = 0;
-
+                if (ILI9341_TouchPressed() == true) {
                     HAL_GPIO_WritePin(GPIOB, LD3_Pin | LD2_Pin, GPIO_PIN_SET);
-
-//                    if (TP_Read_Coordinates(position_array) == TOUCHPAD_DATA_OK) {
-//                        x_pos = position_array[0];
-//                        y_pos = position_array[1];
-//                        ILI9341_Draw_Filled_Circle(x_pos, y_pos, 2, BLACK);
-//
-//                        ILI9341_Set_Rotation(SCREEN_HORIZONTAL_2);
-//                        char counter_buff[30];
-//                        sprintf(counter_buff, "POS X: %.3d", x_pos);
-//                        ILI9341_Draw_Text(counter_buff, 10, 80, BLACK, 2, WHITE);
-//                        sprintf(counter_buff, "POS Y: %.3d", y_pos);
-//                        ILI9341_Draw_Text(counter_buff, 10, 120, BLACK, 2, WHITE);
-//                        ILI9341_Set_Rotation(SCREEN_VERTICAL_1);
-                        printf("%d, %d\n\r", x_pos, y_pos);
-//
-//                    } else {
-//                        printf("R");
-//                    }
-
-                    //ILI9341_Draw_Pixel(x_pos, y_pos, BLACK);
-
-                } else {
-                    printf("N");
-                    HAL_GPIO_WritePin(GPIOB, LD3_Pin | LD2_Pin, GPIO_PIN_RESET);
-                }
-                fflush(stdout);
-                HAL_Delay(10);
-            }
-            if (breaking) break;
-
-
-//            ILI9341_Fill_Screen(WHITE);
-//            ILI9341_Set_Rotation(SCREEN_HORIZONTAL_2);
-//            ILI9341_Draw_Text("Touchscreen", 10, 10, BLACK, 2, WHITE);
-//            ILI9341_Draw_Text("Touch to draw", 10, 30, BLACK, 2, WHITE);
-//            ILI9341_Set_Rotation(SCREEN_VERTICAL_1);
-//
-//            uint16_t position_array[2];
-//            ILI9341_TouchGetCoordinates(position_array+0, position_array+1);
-////            TP_Read_Coordinates(position_array);
-//            printf("%d, %d\n\r", position_array[0], position_array[1]);
-//
-//            while (1) {
-//                if (ILI9341_TouchPressed() || TP_Touchpad_Pressed()) {
-//
-//                    uint16_t x_pos = 0;
-//                    uint16_t y_pos = 0;
-//
-//                    HAL_GPIO_WritePin(GPIOB, LD3_Pin | LD2_Pin, GPIO_PIN_SET);
-//
-//                    ;
-//                    if (ILI9341_TouchGetCoordinates(position_array+0, position_array+1) == true) {
+                    bool ret = ILI9341_TouchGetCoordinates(&x_pos, &y_pos);
+                    printf("%d -> %d, %d\n\r", ret, x_pos, y_pos);
+//                    if (ILI9341_TouchGetCoordinates(&x_pos, &y_pos) == true) {
 //                        x_pos = position_array[0];
 //                        y_pos = position_array[1];
 ////                        ILI9341_Draw_Filled_Circle(x_pos, y_pos, 2, BLACK);
@@ -476,17 +425,16 @@ void graphicsTest(int i, int breaking) {
 //                    } else {
 //                        printf("R");
 //                    }
-//
-//                    //ILI9341_Draw_Pixel(x_pos, y_pos, BLACK);
-//
-//                } else {
-//                    printf("N");
-//                    HAL_GPIO_WritePin(GPIOB, LD3_Pin | LD2_Pin, GPIO_PIN_RESET);
-//                }
-//                fflush(stdout);
-//                HAL_Delay(10);
-//            }
-//            if (breaking) break;
+
+                    //ILI9341_Draw_Pixel(x_pos, y_pos, BLACK);
+                } else {
+                    printf("N");
+                    HAL_GPIO_WritePin(GPIOB, LD3_Pin | LD2_Pin, GPIO_PIN_RESET);
+                }
+                fflush(stdout);
+                HAL_Delay(10);
+            }
+            if (breaking) break;
     }
 
 

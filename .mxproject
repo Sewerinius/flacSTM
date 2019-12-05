@@ -1,7 +1,7 @@
 [PreviousGenFiles]
-HeaderPath=/home/sewerin/Workspace/STM/CLionTest/Inc
+HeaderPath=/home/sewerin/Workspace/STM/tmp/flacSTM/Inc
 HeaderFiles=stm32f7xx_it.h;stm32f7xx_hal_conf.h;main.h;gpio.h;spi.h;usart.h;rng.h;tim.h;usb_otg.h;ffconf.h;usbh_diskio.h;fatfs.h;usb_host.h;usbh_conf.h;FreeRTOSConfig.h;usbh_platform.h;
-SourcePath=/home/sewerin/Workspace/STM/CLionTest/Src
+SourcePath=/home/sewerin/Workspace/STM/tmp/flacSTM/Src
 SourceFiles=stm32f7xx_it.c;stm32f7xx_hal_msp.c;main.c;gpio.c;spi.c;usart.c;rng.c;tim.c;usb_otg.c;usbh_diskio.c;fatfs.c;usb_host.c;usbh_conf.c;freertos.c;stm32f7xx_hal_timebase_tim.c;usbh_platform.c;
 
 [PreviousLibFiles]

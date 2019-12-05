@@ -43,10 +43,9 @@ add_definitions(-D__weak=__attribute__\(\(weak\)\) -D__packed=__attribute__\(\(_
 file(GLOB_RECURSE SOURCES "Middlewares/*.*" "startup/*.*" "Drivers/*.*" "Src/*.*")
 
 file(GLOB_RECURSE LCD_SOURCES Src/ILI9341/*.c)
-file(GLOB_RECURSE LCD_SOURCES2 Src/ILI9341-2/*.c)
 #file(GLOB_RECURSE FLAC_SOURCES Src/flac/*.c)
 set(FLAC_SOURCES Src/flac/bitreader.c Src/flac/decoder3.c)
-set(SOURCES ${SOURCES} ${LCD_SOURCES} ${FLAC_SOURCES} ${LCD_SOURCES2})
+set(SOURCES ${SOURCES} ${LCD_SOURCES} ${FLAC_SOURCES})
 
 include_directories(Inc Drivers/STM32F7xx_HAL_Driver/Inc Drivers/STM32F7xx_HAL_Driver/Inc/Legacy Drivers/CMSIS/Device/ST/STM32F7xx/Include Drivers/CMSIS/Include Middlewares/Third_Party/FatFs/src Middlewares/ST/STM32_USB_Host_Library/Core/Inc Middlewares/ST/STM32_USB_Host_Library/Class/MSC/Inc Src/ILI9341 Src/flac Src/ILI9341-2)
 
@@ -59,7 +58,7 @@ set(HEX_FILE ${PROJECT_BINARY_DIR}/${PROJECT_NAME}.hex)
 set(BIN_FILE ${PROJECT_BINARY_DIR}/${PROJECT_NAME}.bin)
 
 set(WITH_OGG OFF CACHE BOOL "enable ogg functionality" FORCE)
-add_subdirectory(../../flac/flac flac-build)
+add_subdirectory(libs/flac flac-build)
 
 #Begin edit
 #include(CheckIncludeFile)
