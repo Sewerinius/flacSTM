@@ -21,6 +21,7 @@
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
 #include "fatfs.h"
+#include "i2s.h"
 #include "rng.h"
 #include "spi.h"
 #include "tim.h"
@@ -38,6 +39,7 @@
 #include <decoder.h>
 #include <FLAC/all.h>
 #include <graphicsTest.h>
+#include <playerApp.h>
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -165,17 +167,10 @@ int main(void)
   MX_TIM1_Init();
   MX_FATFS_Init();
   MX_USB_HOST_Init();
+  MX_I2S1_Init();
   MX_SPI2_Init();
   /* USER CODE BEGIN 2 */
-
-    SCB_Type* scb = SCB;
-
-//    ILI9341_Unselect();
-//    ILI9341_TouchUnselect();
-
-    ILI9341_Init();
-
-//    ILI9341_Fill_Screen(BLACK);
+    playerInit();
 
     printf("\r\nr%dp%d\r\n", ((SCB->CPUID >> 20) & 0x0F), (SCB->CPUID & 0x0F));
     MX_DriverVbusFS(0);
@@ -185,39 +180,21 @@ int main(void)
         MX_USB_HOST_Process();
     }
 
-//    FLACdecode("/weWillRockYou.flac");
-
   /* USER CODE END 2 */
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
     while (1) {
+        uint32_t sTime = HAL_GetTick();
     /* USER CODE END WHILE */
     MX_USB_HOST_Process();
 
     /* USER CODE BEGIN 3 */
+        uint32_t eTime = HAL_GetTick();
+        playerProcess();
+        HAL_Delay()
 //        graphicsTest(1, 0);
-        graphicsTest(14, 1);
-        char c = 'f';
-        DIR dir;
-        FIL fil;
-//        fresult = f_opendir(&dir, USBHPath);
-//        fresult = f_open(&fil, "Test.txt", FA_CREATE_ALWAYS | FA_WRITE);
-//        printf("fopen: %d\n\r", fresult);
-//        printf("%s\n\r", USBHPath);
-//        FRESULT mountResult = f_mount(&USBHFatFS, USBHPath, 0);
-//        printf("%d\n\r", mountResult);
-//        if (f_mount(&USBHFatFS, USBHPath, 0) != FR_OK) {
-//            Error_Handler();
-//        }
-
-//        while (1) {
-//            int rnd = random() & 7;
-//            HAL_GPIO_WritePin(LD1_GPIO_Port, LD1_Pin, rnd & 1 ? GPIO_PIN_SET : GPIO_PIN_RESET);
-//            HAL_GPIO_WritePin(LD2_GPIO_Port, LD2_Pin, rnd & 2 ? GPIO_PIN_SET : GPIO_PIN_RESET);
-//            HAL_GPIO_WritePin(LD3_GPIO_Port, LD3_Pin, rnd & 4 ? GPIO_PIN_SET : GPIO_PIN_RESET);
-//            HAL_Delay(100);
-//        }
+//        graphicsTest(14, 1);
     }
 
   /* USER CODE END 3 */
@@ -273,7 +250,14 @@ void SystemClock_Config(void)
   {
     Error_Handler();
   }
-  PeriphClkInitStruct.PeriphClockSelection = RCC_PERIPHCLK_USART3|RCC_PERIPHCLK_CLK48;
+  PeriphClkInitStruct.PeriphClockSelection = RCC_PERIPHCLK_USART3|RCC_PERIPHCLK_I2S
+                              |RCC_PERIPHCLK_CLK48;
+  PeriphClkInitStruct.PLLI2S.PLLI2SN = 192;
+  PeriphClkInitStruct.PLLI2S.PLLI2SP = RCC_PLLP_DIV2;
+  PeriphClkInitStruct.PLLI2S.PLLI2SR = 2;
+  PeriphClkInitStruct.PLLI2S.PLLI2SQ = 2;
+  PeriphClkInitStruct.PLLI2SDivQ = 1;
+  PeriphClkInitStruct.I2sClockSelection = RCC_I2SCLKSOURCE_PLLI2S;
   PeriphClkInitStruct.Usart3ClockSelection = RCC_USART3CLKSOURCE_PCLK1;
   PeriphClkInitStruct.Clk48ClockSelection = RCC_CLK48SOURCE_PLL;
   if (HAL_RCCEx_PeriphCLKConfig(&PeriphClkInitStruct) != HAL_OK)
