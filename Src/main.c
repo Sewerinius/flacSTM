@@ -174,7 +174,6 @@ int main(void)
   MX_I2S3_Init();
   MX_SPI2_Init();
   /* USER CODE BEGIN 2 */
-    playerInit();
 
     printf("\r\nr%dp%d\r\n", ((SCB->CPUID >> 20) & 0x0F), (SCB->CPUID & 0x0F));
     MX_DriverVbusFS(0);
@@ -183,6 +182,10 @@ int main(void)
         if(Appli_state == APPLICATION_IDLE) printf(".");
         MX_USB_HOST_Process();
     }
+
+    playerInit();
+
+//    FLACdecode("/wewillrockyou.flac");
 
   /* USER CODE END 2 */
 
@@ -196,7 +199,7 @@ int main(void)
     /* USER CODE BEGIN 3 */
         uint32_t eTime = HAL_GetTick();
         playerProcess();
-        HAL_Delay()
+        HAL_Delay(100);
 //        graphicsTest(1, 0);
 //        graphicsTest(14, 1);
     }

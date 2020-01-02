@@ -6,8 +6,8 @@
 #define CLIONTEST_PLAYERAPP_H
 
 typedef enum playerState {
-    PLAYER_FILEEXPLORER = 0,
-    PLAYER_PLAYER
+    FILE_EXPLORER = 0,
+    PLAYER
 } playerState_t;
 
 void playerInit();

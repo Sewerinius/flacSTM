@@ -44,10 +44,11 @@ file(GLOB_RECURSE SOURCES "Middlewares/*.*" "startup/*.*" "Drivers/*.*" "Src/*.*
 
 file(GLOB_RECURSE LCD_SOURCES Src/ILI9341/*.c)
 #file(GLOB_RECURSE FLAC_SOURCES Src/flac/*.c)
+file(GLOB_RECURSE UDA_SOURCES Src/UDA1380/*.c)
 set(FLAC_SOURCES Src/flac/bitreader.c Src/flac/decoder3.c)
-set(SOURCES ${SOURCES} ${LCD_SOURCES} ${FLAC_SOURCES})
+set(SOURCES ${SOURCES} ${LCD_SOURCES} ${FLAC_SOURCES} ${UDA_SOURCES})
 
-include_directories(Inc Drivers/STM32F7xx_HAL_Driver/Inc Drivers/STM32F7xx_HAL_Driver/Inc/Legacy Drivers/CMSIS/Device/ST/STM32F7xx/Include Drivers/CMSIS/Include Middlewares/Third_Party/FatFs/src Middlewares/ST/STM32_USB_Host_Library/Core/Inc Middlewares/ST/STM32_USB_Host_Library/Class/MSC/Inc Src/ILI9341 Src/flac Src/ILI9341-2)
+include_directories(Inc Drivers/STM32F7xx_HAL_Driver/Inc Drivers/STM32F7xx_HAL_Driver/Inc/Legacy Drivers/CMSIS/Device/ST/STM32F7xx/Include Drivers/CMSIS/Include Middlewares/Third_Party/FatFs/src Middlewares/ST/STM32_USB_Host_Library/Core/Inc Middlewares/ST/STM32_USB_Host_Library/Class/MSC/Inc Src/ILI9341 Src/flac Src/UDA1380)
 
 add_executable(${PROJECT_NAME}.elf ${SOURCES} ${LINKER_SCRIPT})
 
