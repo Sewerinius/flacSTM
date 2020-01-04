@@ -5,13 +5,13 @@
 #ifndef CLIONTEST_PLAYERAPP_H
 #define CLIONTEST_PLAYERAPP_H
 
-typedef enum playerState {
+typedef enum AppState {
     FILE_EXPLORER = 0,
     PLAYER
-} playerState_t;
+} AppState_t;
 
-void playerInit();
+void appInit();
 
-void playerProcess();
+void appProcess();
 
 #endif //CLIONTEST_PLAYERAPP_H

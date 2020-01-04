@@ -52,25 +52,25 @@ static FLAC__bool eofCallback(const FLAC__StreamDecoder *decoder, void *client_d
     return false; //TODO
 }
 
-//static FLAC__StreamDecoderWriteStatus writeCallback(const FLAC__StreamDecoder *decoder, const FLAC__Frame *frame, const FLAC__int32 * const buffer[], void *client_data) {
-//    printf(".");
-//    fflush(stdout);
-//    DecoderData_t* data = client_data;
-//    for (int sample = 0; sample < frame->header.blocksize; ++sample) {
-//        for (int channel = 0; channel < frame->header.channels; ++channel) {
-//            UINT bytesWritten;
-//            FRESULT fresult = f_write(&data->out, buffer[channel] + sample, frame->header.bits_per_sample/8, &bytesWritten);
-//            if (fresult != FR_OK)
-//                return FLAC__STREAM_DECODER_WRITE_STATUS_ABORT;
-//        }
-//    }
-//    return FLAC__STREAM_DECODER_WRITE_STATUS_CONTINUE;
-//}
-
 static FLAC__StreamDecoderWriteStatus writeCallback(const FLAC__StreamDecoder *decoder, const FLAC__Frame *frame, const FLAC__int32 * const buffer[], void *client_data) {
-    printf("%lu, %lu, %lu, %lu\n", frame->header.blocksize, frame->header.channels, frame->header.sample_rate, frame->header.bits_per_sample);
+    printf(".");
+    fflush(stdout);
+    DecoderData_t* data = client_data;
+    for (int sample = 0; sample < frame->header.blocksize; ++sample) {
+        for (int channel = 0; channel < frame->header.channels; ++channel) {
+            UINT bytesWritten;
+            FRESULT fresult = f_write(&data->out, buffer[channel] + sample, frame->header.bits_per_sample/8, &bytesWritten);
+            if (fresult != FR_OK)
+                return FLAC__STREAM_DECODER_WRITE_STATUS_ABORT;
+        }
+    }
     return FLAC__STREAM_DECODER_WRITE_STATUS_CONTINUE;
 }
+
+//static FLAC__StreamDecoderWriteStatus writeCallback(const FLAC__StreamDecoder *decoder, const FLAC__Frame *frame, const FLAC__int32 * const buffer[], void *client_data) {
+//    printf("%lu, %lu, %lu, %lu\n", frame->header.blocksize, frame->header.channels, frame->header.sample_rate, frame->header.bits_per_sample);
+//    return FLAC__STREAM_DECODER_WRITE_STATUS_CONTINUE;
+//}
 
 static void metadataCallback(const FLAC__StreamDecoder *decoder, const FLAC__StreamMetadata *metadata, void *client_data) {
     if(metadata->type == 0) {

@@ -41,7 +41,7 @@
 #include <decoder.h>
 #include <FLAC/all.h>
 #include <graphicsTest.h>
-#include <playerApp.h>
+#include <app.h>
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -183,7 +183,7 @@ int main(void)
         MX_USB_HOST_Process();
     }
 
-    playerInit();
+    appInit();
 
 //    FLACdecode("/wewillrockyou.flac");
 
@@ -198,8 +198,8 @@ int main(void)
 
     /* USER CODE BEGIN 3 */
         uint32_t eTime = HAL_GetTick();
-        playerProcess();
-        HAL_Delay(100);
+        appProcess();
+//        HAL_Delay(100);
 //        graphicsTest(1, 0);
 //        graphicsTest(14, 1);
     }
@@ -259,7 +259,7 @@ void SystemClock_Config(void)
   }
   PeriphClkInitStruct.PeriphClockSelection = RCC_PERIPHCLK_USART3|RCC_PERIPHCLK_I2C1
                               |RCC_PERIPHCLK_I2S|RCC_PERIPHCLK_CLK48;
-  PeriphClkInitStruct.PLLI2S.PLLI2SN = 192;
+  PeriphClkInitStruct.PLLI2S.PLLI2SN = 388;
   PeriphClkInitStruct.PLLI2S.PLLI2SP = RCC_PLLP_DIV2;
   PeriphClkInitStruct.PLLI2S.PLLI2SR = 2;
   PeriphClkInitStruct.PLLI2S.PLLI2SQ = 2;
@@ -288,7 +288,7 @@ void Error_Handler(void)
     /* User can add his own implementation to report the HAL error return state */
     printf("Error\n\r");
     while (1) {
-        HAL_GPIO_TogglePin(LD3_GPIO_Port, LD3_Pin);
+        HAL_GPIO_TogglePin(LD3_GPIO_Port, LD3_Pin); //MAYBE add option to exit with button press
         HAL_Delay(300);
     }
 
