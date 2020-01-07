@@ -431,7 +431,7 @@
     		
     <configuration artifactName="${ProjName}" configurationName="Debug">
       			
-      <resource resourceType="PROJECT" workspacePath="CLionTest" />
+      <resource resourceType="PROJECT" workspacePath="flacSTM" />
       		
     </configuration>
     	

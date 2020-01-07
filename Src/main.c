@@ -20,7 +20,10 @@
 
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
+#include "dma.h"
 #include "fatfs.h"
+#include "i2c.h"
+#include "i2s.h"
 #include "rng.h"
 #include "spi.h"
 #include "tim.h"
@@ -30,11 +33,15 @@
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
-#include <stdlib.h>
 #include <stdio.h>
-#include <ILI9341_STM32_Driver.h>
+//#include <ili9341.h>
+//#include <ili9341_touch.h>
+//#include <ILI9341_STM32_Driver.h>
 #include <usbh_platform.h>
 #include <decoder.h>
+#include <FLAC/all.h>
+#include <graphicsTest.h>
+#include <app.h>
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -80,6 +87,10 @@ void MX_USB_HOST_Process(void);
 PUTCHAR_PROTOTYPE
 //int __io_putchar(int ch)
 {
+    if (ch == '\n') {
+        char ch = '\r';
+        HAL_UART_Transmit(&huart3, (uint8_t *) &ch, 1, 0xFFFFFFFF);
+    }
     HAL_UART_Transmit(&huart3, (uint8_t *) &ch, 1, 0xFFFFFFFF);
     return 0;
 }
@@ -152,67 +163,89 @@ int main(void)
 
   /* Initialize all configured peripherals */
   MX_GPIO_Init();
+  MX_DMA_Init();
   MX_USART3_UART_Init();
   MX_SPI5_Init();
   MX_RNG_Init();
   MX_TIM1_Init();
   MX_FATFS_Init();
   MX_USB_HOST_Init();
+  MX_I2C1_Init();
+  MX_I2S3_Init();
+  MX_SPI2_Init();
   /* USER CODE BEGIN 2 */
 
-//    SCB_Type* scb = SCB;
-//    ILI9341_Init();
+//    {
+//        GPIO_PinState last = HAL_GPIO_ReadPin(GPIOE, GPIO_PIN_0);
+//        int count = 0;
+//        for (int i = 0; i < 10000000; ++i) {
+//            GPIO_PinState current = HAL_GPIO_ReadPin(GPIOE, GPIO_PIN_0);
+//            if (current != last) {
+//                count++;
+//            }
+//            last = current;
+//        }
+//        printf("Changed %d times \n", count);
+//    }
+
+//    {
+//        uint16_t buf = 0;
+//        HAL_I2S_Transmit_DMA(&hi2s3, &buf, 1);
+//        HAL_I2S_Transmit(&hi2s3, &buf, 1);
+//    }
+//  __HAL_I2S_ENABLE(&hi2s3);
+//  HAL_Delay(100);
+
+//    {
+//        GPIO_PinState last = HAL_GPIO_ReadPin(GPIOE, GPIO_PIN_0);
+//        int count = 0;
+//        for (int i = 0; i < 10000000; ++i) {
+//            GPIO_PinState current = HAL_GPIO_ReadPin(GPIOE, GPIO_PIN_0);
+//            if (current != last) {
+//                count++;
+//            }
+//            last = current;
+//        }
+//        printf("Changed %d times \n", count);
+//    }
+
+//    Error_Handler();
+
     printf("\r\nr%dp%d\r\n", ((SCB->CPUID >> 20) & 0x0F), (SCB->CPUID & 0x0F));
     MX_DriverVbusFS(0);
+    printf("Waiting for USB");
     while (Appli_state != APPLICATION_READY) {
+        if(Appli_state == APPLICATION_IDLE) printf(".");
         MX_USB_HOST_Process();
     }
 
-//    char buff[256];
-//    DIR d;
-//    FRESULT fresult;
-//    strcpy(buff, "/");
-//    fresult = scan_files(buff);
-////    fresult = f_opendir(&d, "/");
-////        fresult = f_open(&fil, "Test.txt", FA_CREATE_ALWAYS | FA_WRITE);
-//    printf("fopendir: %d\n\r", fresult);
+    appInit();
 
-    FLACdecode("/queenBohemianRhapsody");
+//    FLACdecode("/wewillrockyou.flac");
 
   /* USER CODE END 2 */
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
+    GPIO_PinState last = HAL_GPIO_ReadPin(GPIOE, GPIO_PIN_0);
+
     while (1) {
+        uint32_t sTime = HAL_GetTick();
     /* USER CODE END WHILE */
     MX_USB_HOST_Process();
 
     /* USER CODE BEGIN 3 */
-        char c = 'f';
-        DIR dir;
-        FIL fil;
-//        fresult = f_opendir(&dir, USBHPath);
-//        fresult = f_open(&fil, "Test.txt", FA_CREATE_ALWAYS | FA_WRITE);
-//        printf("fopen: %d\n\r", fresult);
-//        HAL_UART_Transmit(&huart3, &c, 1, 0xFFFF);
-//        printf("test\n\r");
-//        printf("%s\n\r", USBHPath);
-//        FRESULT mountResult = f_mount(&USBHFatFS, USBHPath, 0);
-//        printf("%d\n\r", mountResult);
-//        if (f_mount(&USBHFatFS, USBHPath, 0) != FR_OK) {
-//            Error_Handler();
-//        }
+        appProcess();
+        uint32_t tTime = HAL_GetTick() - sTime;
 
-//        printf("Appli_state: %d\r\n", Appli_state);
+        GPIO_PinState current = HAL_GPIO_ReadPin(GPIOE, GPIO_PIN_0);
+        if (current != last) {
+//            printf("C\n");
+        }
+        last = current;
 //        HAL_Delay(100);
-
-//        while (1) {
-//            int rnd = random() & 7;
-//            HAL_GPIO_WritePin(LD1_GPIO_Port, LD1_Pin, rnd & 1 ? GPIO_PIN_SET : GPIO_PIN_RESET);
-//            HAL_GPIO_WritePin(LD2_GPIO_Port, LD2_Pin, rnd & 2 ? GPIO_PIN_SET : GPIO_PIN_RESET);
-//            HAL_GPIO_WritePin(LD3_GPIO_Port, LD3_Pin, rnd & 4 ? GPIO_PIN_SET : GPIO_PIN_RESET);
-//            HAL_Delay(100);
-//        }
+//        graphicsTest(1, 0);
+//        graphicsTest(14, 1);
     }
 
   /* USER CODE END 3 */
@@ -268,8 +301,16 @@ void SystemClock_Config(void)
   {
     Error_Handler();
   }
-  PeriphClkInitStruct.PeriphClockSelection = RCC_PERIPHCLK_USART3|RCC_PERIPHCLK_CLK48;
+  PeriphClkInitStruct.PeriphClockSelection = RCC_PERIPHCLK_USART3|RCC_PERIPHCLK_I2C1
+                              |RCC_PERIPHCLK_I2S|RCC_PERIPHCLK_CLK48;
+  PeriphClkInitStruct.PLLI2S.PLLI2SN = 388;
+  PeriphClkInitStruct.PLLI2S.PLLI2SP = RCC_PLLP_DIV2;
+  PeriphClkInitStruct.PLLI2S.PLLI2SR = 2;
+  PeriphClkInitStruct.PLLI2S.PLLI2SQ = 2;
+  PeriphClkInitStruct.PLLI2SDivQ = 1;
+  PeriphClkInitStruct.I2sClockSelection = RCC_I2SCLKSOURCE_PLLI2S;
   PeriphClkInitStruct.Usart3ClockSelection = RCC_USART3CLKSOURCE_PCLK1;
+  PeriphClkInitStruct.I2c1ClockSelection = RCC_I2C1CLKSOURCE_PCLK1;
   PeriphClkInitStruct.Clk48ClockSelection = RCC_CLK48SOURCE_PLL;
   if (HAL_RCCEx_PeriphCLKConfig(&PeriphClkInitStruct) != HAL_OK)
   {
@@ -291,7 +332,7 @@ void Error_Handler(void)
     /* User can add his own implementation to report the HAL error return state */
     printf("Error\n\r");
     while (1) {
-        HAL_GPIO_TogglePin(LD3_GPIO_Port, LD3_Pin);
+        HAL_GPIO_TogglePin(LD3_GPIO_Port, LD3_Pin); //MAYBE add option to exit with button press
         HAL_Delay(300);
     }
 
