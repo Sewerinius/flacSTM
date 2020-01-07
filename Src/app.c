@@ -85,7 +85,7 @@ static void openFolder() {
 static void drawFileExplorer();
 
 void appInit() {
-    UDA1380_Configuration();
+    playerInit();
 
     ILI9341_Init();
     ILI9341_Set_Rotation(SCREEN_HORIZONTAL_2);
@@ -96,7 +96,6 @@ void appInit() {
     redraw = true;
     openFolder();
 //    strcpy(currentFolder, "/");
-    playerInit();
 }
 
 static int startx = -1;
@@ -197,7 +196,6 @@ void appProcess() {
 
     switch (state) {
         case FILE_EXPLORER:
-            HAL_Delay(10);
             break;
         case PLAYER:
             playerProcess();

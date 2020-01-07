@@ -6,12 +6,19 @@
 #include <stdio.h>
 #include <FLAC/stream_decoder.h>
 #include <FLAC/format.h>
+#include <stdbool.h>
+#include <uda1380.h>
 #include "bitreader.h"
 #include "audioBuffer.h"
 #include "i2s.h"
 #include "player.h"
 
+#define ZEROES_SIZE 256
+uint16_t zeroes[ZEROES_SIZE] = {0};
+static bool playingZeroes = true;
+
 static int currentlyPlayingBufferIdx = 1;
+static int lastFreeBufferIdx = 0;
 static AudioBuffer_t buffers[] = {NEW_AUDIO_BUFFER, NEW_AUDIO_BUFFER};
 static int freeCount = 2;
 
@@ -31,13 +38,16 @@ static void tryI2sPlayNext() {
     int idx = 1 - currentlyPlayingBufferIdx;
     switch (buffers[idx].state) {
         case FILLED:
-        case PLAY_IMMEDIATELY:
+            playingZeroes = false;
             i2sPlay(idx);
             break;
         case NEW:
         case FREE:
-        case PLAY_WHEN_FILLED:
-            buffers[idx].state = PLAY_WHEN_FILLED;
+            playingZeroes = true;
+            HAL_StatusTypeDef res = HAL_I2S_Transmit_DMA(&hi2s3, zeroes, ZEROES_SIZE);
+            if (res != HAL_OK) {
+                Error_Handler();
+            }
             break;
         case PLAYING:
             Error_Handler();
@@ -46,8 +56,10 @@ static void tryI2sPlayNext() {
 }
 
 void HAL_I2S_TxCpltCallback(I2S_HandleTypeDef *hi2s) {
-    buffers[currentlyPlayingBufferIdx].state = FREE;
-    freeCount++;
+    if (!playingZeroes) {
+        buffers[currentlyPlayingBufferIdx].state = FREE;
+        freeCount++;
+    }
     tryI2sPlayNext();
 }
 
@@ -101,7 +113,8 @@ static FLAC__bool eofCallback(const FLAC__StreamDecoder *decoder, void *client_d
 
 static FLAC__StreamDecoderWriteStatus writeCallback(const FLAC__StreamDecoder *decoder, const FLAC__Frame *frame, const FLAC__int32 * const buffer[], void *client_data) {
 //    printf("%lu, %lu, %lu, %lu\n", frame->header.blocksize, frame->header.channels, frame->header.sample_rate, frame->header.bits_per_sample);
-    fillAudioBuffer(&buffers[1-currentlyPlayingBufferIdx], frame, buffer);
+    fillAudioBuffer(&buffers[lastFreeBufferIdx], frame, buffer);
+    lastFreeBufferIdx = 1-lastFreeBufferIdx;
     freeCount--;
     return FLAC__STREAM_DECODER_WRITE_STATUS_CONTINUE;
 }
@@ -132,9 +145,14 @@ static FLAC__StreamDecoder* decoder;
 static DecoderData_t* decoderData;
 
 void playerInit() {
+    tryI2sPlayNext();
+    HAL_Delay(100);
+
     decoder = FLAC__stream_decoder_new();
     decoderData = malloc(sizeof(DecoderData_t));
     decoderData->streamInfo = NULL;
+
+    UDA1380_Configuration();
 }
 
 void playerInitFile(char *fileName) {
@@ -146,7 +164,7 @@ void playerInitFile(char *fileName) {
     FLAC__stream_decoder_init_stream(decoder, readCallback, seekCallback, tellCallback, lengthCallback, eofCallback, writeCallback, metadataCallback, errorCallback, decoderData);
     FLAC__stream_decoder_process_until_end_of_metadata(decoder);
     FLAC__stream_decoder_process_single(decoder);
-    tryI2sPlayNext();
+//    tryI2sPlayNext();
 }
 
 void playerStop() {
@@ -159,12 +177,10 @@ void playerStop() {
 void playerProcess() {
     if (freeCount > 0) {
         FLAC__stream_decoder_process_single(decoder); //TODO: EOF
-        if (buffers[1-currentlyPlayingBufferIdx].state == PLAY_IMMEDIATELY) {
-            tryI2sPlayNext();
-        }
-    } else {
-        HAL_Delay(10); //MAYBE calc delay
     }
+//    } else {
+//        HAL_Delay(10); //MAYBE calc delay
+//    }
 }
 
 void playerDraw() {

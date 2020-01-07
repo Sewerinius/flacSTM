@@ -5,9 +5,7 @@
 
 typedef enum ABState {
     NEW = 0,
-    PLAY_WHEN_FILLED,
     FILLED,
-    PLAY_IMMEDIATELY,
     PLAYING,
     FREE
 } ABState_t;

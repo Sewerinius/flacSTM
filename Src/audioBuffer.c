@@ -16,7 +16,7 @@ static void resize(AudioBuffer_t *this, size_t newSize) {
 }
 
 void fillAudioBuffer(AudioBuffer_t *this, const FLAC__Frame *frame, const FLAC__int32 *const *buffer) {
-    assert(this->state != FILLED && this->state != PLAYING && this->state != PLAY_IMMEDIATELY);
+    assert(this->state != FILLED && this->state != PLAYING);
 //    static int count = 0;
 //    printf("%d\n", ++count);
 //    printf("%d\n", this->state);
@@ -46,11 +46,7 @@ void fillAudioBuffer(AudioBuffer_t *this, const FLAC__Frame *frame, const FLAC__
         }
     }
     assert(k < size + 1);
-    if (this->state == PLAY_WHEN_FILLED) {
-        this->state = PLAY_IMMEDIATELY;
-    } else {
-        this->state = FILLED;
-    }
+    this->state = FILLED;
 }
 
 void freeAudioBuffer(AudioBuffer_t *this) {
