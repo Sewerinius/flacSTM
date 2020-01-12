@@ -118,21 +118,21 @@
 
 uint8_t UDA1380InitData[][3] =
         {
-                {UDA1380_REG_PWRCTRL,  0xA5, 0xDF}, //0x25, 0xDF
-                {UDA1380_REG_EVALCLK,  0x0F, 0x02},
-                {UDA1380_REG_I2S,      0x00, 0x00},
-                {UDA1380_REG_ANAMIX,   0x0B, 0x0B},
-                {UDA1380_REG_HEADAMP,  0x02, 0x02},
-                {UDA1380_REG_MSTRVOL,  0x77, 0x77},
-                {UDA1380_REG_MIXVOL,   0x00, 0x00},
-                {UDA1380_REG_MODEBBT,  0x55, 0x15},
-                {UDA1380_REG_MSTRMUTE, 0x00, 0x00},
-                {UDA1380_REG_MIXSDO,   0x00, 0x00},
-                {UDA1380_REG_DECVOL,   0x00, 0x00},
-                {UDA1380_REG_PGA,      0x00, 0x00},
-                {UDA1380_REG_ADC,      0x0F, 0x02},
-                {UDA1380_REG_AGC,      0x00, 0x00},
-                {0xFF,                 0xFF, 0xFF}
+                {UDA1380_REG_PWRCTRL,  0x25, 0x00},
+                {UDA1380_REG_EVALCLK,  0x07, 0x02},
+                {UDA1380_REG_I2S,      0x05, 0x00},
+                {UDA1380_REG_ANAMIX,   0x00, 0x00},
+                {UDA1380_REG_HEADAMP,     0x02, 0x02},
+                {UDA1380_REG_MSTRVOL,     0x37, 0x37}, //VOLUME
+                {UDA1380_REG_MIXVOL,      0xFF, 0x00}, //MIXER VOLUME
+                {UDA1380_REG_MODEBBT,     0x00, 0x00}, //BASS Boost and Treble
+                {UDA1380_REG_MSTRMUTE,    0x08, 0x02}, //De-emphasis, depends on input frequency
+                {UDA1380_REG_MIXSDO,      0x60, 0x00},
+                {UDA1380_REG_DECVOL,      0x00, 0x00},
+                {UDA1380_REG_PGA,         0x00, 0x00},
+                {UDA1380_REG_ADC,         0x0F, 0x02},
+                {UDA1380_REG_AGC,         0x00, 0x00},
+                {0xFF,                    0xFF, 0xFF}
         };
 
 uint8_t UDA1380_Configuration(void) {
@@ -144,6 +144,7 @@ uint8_t UDA1380_Configuration(void) {
     errorcode = HAL_I2C_IsDeviceReady(&hi2c1, dev_addr, 3, HAL_MAX_DELAY);
     if (errorcode != HAL_OK) {
         printf("UDA1380 Ready result: %d\n", errorcode);
+        return ERROR;
     }
 
 //    {
@@ -153,20 +154,20 @@ uint8_t UDA1380_Configuration(void) {
 //    }
 
     while (UDA1380InitData[i][0] != 0xff) {
-        uint8_t res[] = {0, 0};
-        errorcode = HAL_I2C_Mem_Read(&hi2c1, dev_addr, UDA1380InitData[i][0], 1, res, 2, HAL_MAX_DELAY);
-        printf("0x%X before: 0x%02X%02X, errorcode=%d\n", UDA1380InitData[i][0], res[0], res[1], errorcode);
+//        uint8_t res[] = {0, 0};
+//        errorcode = HAL_I2C_Mem_Read(&hi2c1, dev_addr, UDA1380InitData[i][0], 1, res, 2, HAL_MAX_DELAY);
+//        printf("0x%X before: 0x%02X%02X, errorcode=%d\n", UDA1380InitData[i][0], res[0], res[1], errorcode);
 
         errorcode = HAL_I2C_Master_Transmit(&hi2c1, dev_addr, UDA1380InitData[i], 3, HAL_MAX_DELAY); //TODO: Check if data isn't sent in wrong endianess
 //        HAL_Delay(100);
         if (errorcode == HAL_OK) {
-
             {
                 uint8_t res[] = {0, 0};
                 errorcode = HAL_I2C_Mem_Read(&hi2c1, dev_addr, UDA1380InitData[i][0], 1, res, 2, HAL_MAX_DELAY);
                 printf("0x%X after: 0x%02X%02X, errorcode=%d\n", UDA1380InitData[i][0], res[0], res[1], errorcode);
                 if (res[0] != UDA1380InitData[i][1] || res[1] != UDA1380InitData[i][2]) {
                     printf("WRONG!\nExpected 0x%02X%02X, got 0x%02X%02X\n", UDA1380InitData[i][1], UDA1380InitData[i][2], res[0], res[1]);
+                    return ERROR;
                 }
             }
         } else {

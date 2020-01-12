@@ -11,13 +11,19 @@
 #include <5x5_font.h>
 #include <uda1380.h>
 #include "app.h"
+#include <app_internal.h>
 #include "player.h"
 
 static AppState_t state;
-static bool redraw;
+//static bool redraw;
+static uint32_t events;
 //static char currentFolder[512];
 static int scrollOffset;
 #define ROW_HEIGHT CHAR_HEIGHT * 3
+
+void changeAppState(AppState_t newState) {
+    state = newState;
+}
 
 typedef struct FileList {
     char *fname;
@@ -92,8 +98,8 @@ void appInit() {
     ILI9341_Fill_Screen(WHITE);
     scrollOffset = CHAR_HEIGHT;
 
-    state = FILE_EXPLORER;
-    redraw = true;
+    changeAppState(FILE_EXPLORER);
+    events = APP_EVENT_REDRAW;
     openFolder();
 //    strcpy(currentFolder, "/");
 }
@@ -106,7 +112,6 @@ static int lasty = -1;
 
 static void startPlaying(FileList_t* file) {
     currentlyPlaying = file;
-    state = PLAYER;
     playerInitFile(file->fname);
 }
 
@@ -125,8 +130,9 @@ FileList_t* getClickedFile(int x) {
     return NULL;
 }
 
-static void handleClick(int x, int y) {
+static uint32_t handleClick(int x, int y) {
 //    printf("Click!\n");
+    uint32_t ret = 0;
     switch (state) {
         case FILE_EXPLORER: {
             FileList_t *clicked = getClickedFile(x);
@@ -134,34 +140,38 @@ static void handleClick(int x, int y) {
                 if ((clicked->attribs & AM_DIR) != 0) {
                     f_chdir(clicked->fname);
                     openFolder();
-                    redraw = true;
+                    ret |= APP_EVENT_REDRAW;
                 } else {
                     startPlaying(clicked);
-                    redraw = true;
+                    ret |= APP_EVENT_REDRAW;
                 }
             }
             break;
         }
         case PLAYER:
-            playerHandleClick(x, y);
+            ret |= playerHandleClick(x, y);
             break;
     }
+    return ret;
 }
 
-static void handleScroll(int dx, int dy) {
+static uint32_t handleScroll(int dx, int dy) {
+    uint32_t ret = 0;
     switch (state) {
         case FILE_EXPLORER:
             if (dx != 0) {
                 scrollOffset += dx;
-                redraw = true;
+                ret |= APP_EVENT_REDRAW;
             }
             break;
         case PLAYER:
             break;
     }
+    return ret;
 }
 
-static void handleTouch() {
+static uint32_t handleTouch() {
+    uint32_t ret = 0;
     if (ILI9341_TouchPressed() == true) {
         uint16_t x, y;
         ILI9341_TouchGetCoordinates(&x, &y);
@@ -173,14 +183,14 @@ static void handleTouch() {
         }
 
         if (lastx != -1) {
-            handleScroll(x - lastx, y - lasty);
+            ret |= handleScroll(x - lastx, y - lasty);
         }
         lastx = x;
         lasty = y;
     } else {
         if (startx != -1) {
             if (abs(startx - lastx) < CLICK_TRESHOLD && abs(starty - lasty) < CLICK_TRESHOLD) {
-                handleClick((startx + lastx) >> 1, (starty + lasty) >> 1);
+                ret |= handleClick((startx + lastx) >> 1, (starty + lasty) >> 1);
             }
 
             startx = -1;
@@ -189,22 +199,21 @@ static void handleTouch() {
             lasty = -1;
         }
     }
+    return ret;
 }
 
 void appProcess() {
-    handleTouch();
+    events |= handleTouch();
 
     switch (state) {
         case FILE_EXPLORER:
             break;
         case PLAYER:
-            playerProcess();
+            events |= playerProcess();
             break;
     }
 
-    if (redraw == true) {
-        redraw = false;
-        ILI9341_Fill_Screen(WHITE);
+    if ((events & APP_EVENT_REDRAW) != 0) {
         switch (state) {
             case FILE_EXPLORER:
                 drawFileExplorer();
@@ -215,10 +224,11 @@ void appProcess() {
         }
     }
 
-    //    FLACdecode("/weWillRockYou.flac");
+    events = 0;
 }
 
 static void drawFileExplorer() {
+    ILI9341_Fill_Screen(WHITE);
     FileList_t *head = files;
 
     int i = scrollOffset;

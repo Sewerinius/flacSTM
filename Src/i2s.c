@@ -33,7 +33,7 @@ void MX_I2S3_Init(void)
 
   hi2s3.Instance = SPI3;
   hi2s3.Init.Mode = I2S_MODE_MASTER_TX;
-  hi2s3.Init.Standard = I2S_STANDARD_PHILIPS;
+  hi2s3.Init.Standard = I2S_STANDARD_MSB;
   hi2s3.Init.DataFormat = I2S_DATAFORMAT_16B;
   hi2s3.Init.MCLKOutput = I2S_MCLKOUTPUT_ENABLE;
   hi2s3.Init.AudioFreq = I2S_AUDIOFREQ_44K;
