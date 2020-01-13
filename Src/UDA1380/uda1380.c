@@ -30,6 +30,9 @@
 #define UDA1380_REG_HEADPHONE     0x18
 #define UDA1380_REG_DEC           0x28
 
+#define MAX_VOLUME 250;
+static int VOLUME_LEVEL = 120;
+
 //uint8_t UDA1380InitData[][3] =
 //        {
 //                /*
@@ -198,4 +201,18 @@ uint8_t UDA1380_Configuration(void) {
 
     printf("UDA1380 Init OK!\r\n");
     return SUCCESS;
+}
+
+void volumeUp () {
+    if(VOLUME_LEVEL > 0) {
+        VOLUME_LEVEL -= 10;
+        HAL_I2C_Master_Transmit(&hi2c1, UDA1380_REG_MSTRVOL, VOLUME_LEVEL, 8, HAL_MAX_DELAY);
+    }
+}
+
+void volumeDown () {
+    if(VOLUME_LEVEL < MAX_VOLUME) {
+        VOLUME_LEVEL += 10;
+        HAL_I2C_Master_Transmit(&hi2c1, UDA1380_REG_MSTRVOL, VOLUME_LEVEL, 8, HAL_MAX_DELAY);
+    }
 }

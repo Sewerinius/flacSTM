@@ -6,5 +6,7 @@
 #define FLACSTM_UDA1380_H
 
 uint8_t UDA1380_Configuration(void);
+void volumeUp();
+void volumeDown();
 
 #endif //FLACSTM_UDA1380_H
