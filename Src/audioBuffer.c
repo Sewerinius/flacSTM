@@ -17,7 +17,7 @@ static void resize(AudioBuffer_t *this, size_t newSize) {
 
 void fillAudioBuffer(AudioBuffer_t *this, const FLAC__Frame *frame, const FLAC__int32 *const *buffer) {
     if(this->state == FILLED || this->state == PLAYING) {
-        printf("NO\n");
+        printf("NO, %d\n", this->state);
     }
 
     assert(this->state != FILLED && this->state != PLAYING);

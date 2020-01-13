@@ -169,14 +169,6 @@ static FLAC__StreamDecoder *decoder;
 static DecoderData_t *decoderData;
 
 void playerInit() {
-//    for (int i = 0; i < ZEROES_SIZE; i++) {
-//        if (i < ZEROES_SIZE / 2) {
-//            zeroes[i] = 0xFFFF * i / (ZEROES_SIZE / 2);
-//        } else {
-//            zeroes[i] = 0xFFFF * (ZEROES_SIZE - i) / (ZEROES_SIZE / 2);
-//        }
-//    }
-
     tryI2sPlayNext();
     HAL_Delay(100);
 
@@ -207,6 +199,8 @@ void playerStop() {
     f_close(&decoderData->file);
     free(decoderData->streamInfo);
     decoderData->streamInfo = NULL;
+
+    changeAppState(FILE_EXPLORER);
 }
 
 uint32_t playerProcess() {
@@ -214,7 +208,12 @@ uint32_t playerProcess() {
     if (freeCount > 0) {
         if(FLAC__stream_decoder_process_single(decoder)) {
             ret |= APP_EVENT_REDRAW;
-        } //TODO: EOF
+        }
+        if (FLAC__stream_decoder_get_state(decoder) == FLAC__STREAM_DECODER_END_OF_STREAM && playingZeroes) {
+            playerStop();
+            ret |= APP_EVENT_REDRAW;
+        }
+
     } else {
         HAL_Delay(10); //MAYBE calc delay
     }
@@ -240,15 +239,13 @@ uint32_t playerProcess() {
 #define PROGRESS_BAR_RIGHT 310
 #define PROGRESS_BAR_WIDTH PROGRESS_BAR_RIGHT - PROGRESS_BAR_LEFT
 
-#define VOLUME_UP_X 285
+#define VOLUME_UP_X 295
 #define VOLUME_UP_Y 25
-#define VOLUME_DOWN_X 285
+#define VOLUME_DOWN_X 295
 #define VOLUME_DOWN_Y 75
 #define VOLUME_BUTTONS_RADIUS 15
 #define VOLUME_BUTTONS_SIZE 22
 #define VOLUME_BUTTONS_WIDTH 7
-
-static bool lastPaused = false;
 
 void playerDraw() {
     if (fullRedraw) {
@@ -302,7 +299,6 @@ uint32_t playerHandleClick(int y, int x) {
     { //Check for back button
         if (x >= BACK_BUTTON_LEFT && x <= BACK_BUTTON_RIGHT && y >= BACK_BUTTON_TOP && y <= BACK_BUTTON_BOTTOM) {
             playerStop();
-            changeAppState(FILE_EXPLORER);
             ret |= APP_EVENT_REDRAW;
         }
     }
@@ -317,6 +313,7 @@ uint32_t playerHandleClick(int y, int x) {
                     buffers[i].state = FREE;
                     freeCount++;
                     lastFreeBufferIdx = i; //TODO figure out why assertion breaks without this line
+                    currentlyPlayingBufferIdx = 1-i;
                 }
             }
             FLAC__bool res = FLAC__stream_decoder_seek_absolute(decoder, prog);
@@ -334,7 +331,7 @@ uint32_t playerHandleClick(int y, int x) {
 
         if (dx * dx + dy * dy < VOLUME_BUTTONS_RADIUS * VOLUME_BUTTONS_RADIUS) {
             // increase volume level
-            volumeUp();
+            UDA1380_volumeUp();
         }
     }
 
@@ -344,7 +341,7 @@ uint32_t playerHandleClick(int y, int x) {
 
         if (dx * dx + dy * dy < VOLUME_BUTTONS_RADIUS * VOLUME_BUTTONS_RADIUS) {
             // decrease volume level
-            volumeDown();
+            UDA1380_volumeDown();
         }
     }
 

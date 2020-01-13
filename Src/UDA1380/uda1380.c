@@ -5,6 +5,7 @@
 #include <stm32f7xx_hal.h>
 #include <i2c.h>
 #include <stdio.h>
+#include <assert.h>
 #include "stm32f767xx.h"
 #include "uda1380.h"
 
@@ -29,9 +30,6 @@
 #define UDA1380_REG_L3            0x7f
 #define UDA1380_REG_HEADPHONE     0x18
 #define UDA1380_REG_DEC           0x28
-
-#define MAX_VOLUME 250;
-static int VOLUME_LEVEL = 120;
 
 //uint8_t UDA1380InitData[][3] =
 //        {
@@ -119,6 +117,11 @@ static int VOLUME_LEVEL = 120;
 //                {0xFF,                    0xFF, 0xFF}
 //        };
 
+#define MIN_VOLUME 0xFC
+#define INITIAL_VOLUME 0x37
+#define DELTA_VOLUME 10
+static uint8_t volumeLevel = INITIAL_VOLUME;
+
 uint8_t UDA1380InitData[][3] =
         {
                 {UDA1380_REG_PWRCTRL,  0x25, 0x00},
@@ -126,7 +129,7 @@ uint8_t UDA1380InitData[][3] =
                 {UDA1380_REG_I2S,      0x05, 0x00},
                 {UDA1380_REG_ANAMIX,   0x00, 0x00},
                 {UDA1380_REG_HEADAMP,     0x02, 0x02},
-                {UDA1380_REG_MSTRVOL,     0x37, 0x37}, //VOLUME
+                {UDA1380_REG_MSTRVOL,     INITIAL_VOLUME, INITIAL_VOLUME}, //VOLUME
                 {UDA1380_REG_MIXVOL,      0xFF, 0x00}, //MIXER VOLUME
                 {UDA1380_REG_MODEBBT,     0x00, 0x00}, //BASS Boost and Treble
                 {UDA1380_REG_MSTRMUTE,    0x08, 0x02}, //De-emphasis, depends on input frequency
@@ -203,16 +206,27 @@ uint8_t UDA1380_Configuration(void) {
     return SUCCESS;
 }
 
-void volumeUp () {
-    if(VOLUME_LEVEL > 0) {
-        VOLUME_LEVEL -= 10;
-        HAL_I2C_Master_Transmit(&hi2c1, UDA1380_REG_MSTRVOL, VOLUME_LEVEL, 8, HAL_MAX_DELAY);
+static void changeVolume(int8_t dv) {
+    if (volumeLevel < -dv)
+        volumeLevel = 0;
+    else if (volumeLevel > MIN_VOLUME - dv) {
+        volumeLevel = MIN_VOLUME;
+    } else {
+        volumeLevel += dv;
     }
+
+    uint8_t data[3] = {UDA1380_REG_MSTRVOL, volumeLevel, volumeLevel};
+    HAL_StatusTypeDef errorcode = HAL_I2C_Master_Transmit(&hi2c1, UDA1380_WRITE_ADDRESS, data, 3, HAL_MAX_DELAY);
+
+    assert(errorcode == HAL_OK);
+    assert(HAL_I2C_Mem_Read(&hi2c1, UDA1380_WRITE_ADDRESS, UDA1380_REG_MSTRVOL, 1, data + 1, 2, HAL_MAX_DELAY) == HAL_OK);
+    assert(data[1] == volumeLevel && data[2] == volumeLevel);
 }
 
-void volumeDown () {
-    if(VOLUME_LEVEL < MAX_VOLUME) {
-        VOLUME_LEVEL += 10;
-        HAL_I2C_Master_Transmit(&hi2c1, UDA1380_REG_MSTRVOL, VOLUME_LEVEL, 8, HAL_MAX_DELAY);
-    }
+void UDA1380_volumeUp() {
+    changeVolume(-DELTA_VOLUME);
+}
+
+void UDA1380_volumeDown() {
+    changeVolume(DELTA_VOLUME);
 }
