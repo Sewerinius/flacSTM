@@ -16,6 +16,10 @@ static void resize(AudioBuffer_t *this, size_t newSize) {
 }
 
 void fillAudioBuffer(AudioBuffer_t *this, const FLAC__Frame *frame, const FLAC__int32 *const *buffer) {
+    if(this->state == FILLED || this->state == PLAYING) {
+        printf("NO\n");
+    }
+
     assert(this->state != FILLED && this->state != PLAYING);
     assert(frame->header.channels == 2);
     assert(frame->header.bits_per_sample == 16);

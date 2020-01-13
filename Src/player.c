@@ -26,7 +26,9 @@ static bool fullRedraw = true;
 
 static int currentlyPlayingBufferIdx = 1;
 static int lastFreeBufferIdx = 0;
-static AudioBuffer_t buffers[] = {NEW_AUDIO_BUFFER, NEW_AUDIO_BUFFER};
+
+#define TOTAL_BUFFERS 2
+static AudioBuffer_t buffers[TOTAL_BUFFERS] = {NEW_AUDIO_BUFFER, NEW_AUDIO_BUFFER};
 static int freeCount = 2;
 
 static void i2sPlay(int idx) {
@@ -43,22 +45,17 @@ static void tryI2sPlayNext() {
         Error_Handler();
     }
     int idx = 1 - currentlyPlayingBufferIdx;
-    switch (buffers[idx].state) {
-        case FILLED:
-            playingZeroes = false;
-            i2sPlay(idx);
-            break;
-        case NEW:
-        case FREE:
-            playingZeroes = true;
-            HAL_StatusTypeDef res = HAL_I2S_Transmit_DMA(&hi2s3, zeroes, ZEROES_SIZE);
-            if (res != HAL_OK) {
-                Error_Handler();
-            }
-            break;
-        case PLAYING:
+    if (buffers[idx].state == FILLED && !paused) {
+        playingZeroes = false;
+        i2sPlay(idx);
+    } else if (buffers[idx].state == PLAYING) {
+        Error_Handler();
+    } else {
+        playingZeroes = true;
+        HAL_StatusTypeDef res = HAL_I2S_Transmit_DMA(&hi2s3, zeroes, ZEROES_SIZE);
+        if (res != HAL_OK) {
             Error_Handler();
-            break;
+        }
     }
 }
 
@@ -298,7 +295,16 @@ uint32_t playerHandleClick(int y, int x) {
 
     { //Check for progress bar
         if (x >= PROGRESS_BAR_LEFT && x <= PROGRESS_BAR_RIGHT && y >= PROGRESS_BAR_TOP && y <= PROGRESS_BAR_BOTTOM) {
+//            printf("%d, %d\n", currentlyPlayingBufferIdx, lastFreeBufferIdx);
             FLAC__uint64 prog = FLAC__stream_decoder_get_total_samples(decoder) * (double) (x-PROGRESS_BAR_LEFT) / PROGRESS_BAR_WIDTH;
+            for (int i = 0; i < TOTAL_BUFFERS; i++) {
+                while(buffers[i].state == PLAYING);
+                if(buffers[i].state == FILLED) {
+                    buffers[i].state = FREE;
+                    freeCount++;
+                    lastFreeBufferIdx = i; //TODO figure out why assertion breaks without this line
+                }
+            }
             FLAC__bool res = FLAC__stream_decoder_seek_absolute(decoder, prog);
             if (!res) {
                 printf("SEEK_ERROR\n");
