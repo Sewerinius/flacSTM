@@ -240,6 +240,14 @@ uint32_t playerProcess() {
 #define PROGRESS_BAR_RIGHT 310
 #define PROGRESS_BAR_WIDTH PROGRESS_BAR_RIGHT - PROGRESS_BAR_LEFT
 
+#define VOLUME_UP_X 285
+#define VOLUME_UP_Y 50
+#define VOLUME_DOWN_X 285
+#define VOLUME_DOWN_Y 100
+#define VOLUME_BUTTONS_RADIUS 15
+#define VOLUME_BUTTONS_SIZE 22
+#define VOLUME_BUTTONS_WIDTH 7
+
 static bool lastPaused = false;
 
 void playerDraw() {
@@ -270,6 +278,12 @@ void playerDraw() {
     double prog = (double) pos / f_size(&decoderData->file);
     ILI9341_Draw_Rectangle(PROGRESS_BAR_LEFT, PROGRESS_BAR_TOP, prog * PROGRESS_BAR_WIDTH, PROGRESS_BAR_HEIGHT, BLACK);
 
+    ILI9341_Draw_Hollow_Circle(VOLUME_UP_X, VOLUME_UP_Y, VOLUME_BUTTONS_RADIUS, GREEN);
+    ILI9341_Draw_Filled_Rectangle_Coord(VOLUME_UP_X - VOLUME_BUTTONS_SIZE/2, VOLUME_UP_Y - VOLUME_BUTTONS_WIDTH/2, VOLUME_UP_X + VOLUME_BUTTONS_SIZE/2, VOLUME_UP_Y + VOLUME_BUTTONS_WIDTH/2, GREEN);
+    ILI9341_Draw_Filled_Rectangle_Coord(VOLUME_UP_X - VOLUME_BUTTONS_WIDTH/2, VOLUME_UP_Y - VOLUME_BUTTONS_SIZE/2, VOLUME_UP_X +  VOLUME_BUTTONS_WIDTH/2, VOLUME_UP_Y + VOLUME_BUTTONS_SIZE/2, GREEN);
+
+    ILI9341_Draw_Hollow_Circle(VOLUME_DOWN_X, VOLUME_DOWN_Y, VOLUME_BUTTONS_RADIUS, GREEN);
+    ILI9341_Draw_Filled_Rectangle_Coord(VOLUME_DOWN_X - VOLUME_BUTTONS_SIZE/2, VOLUME_DOWN_Y - VOLUME_BUTTONS_WIDTH/2, VOLUME_DOWN_X + VOLUME_BUTTONS_SIZE/2, VOLUME_DOWN_Y + VOLUME_BUTTONS_WIDTH/2, GREEN);
 }
 
 uint32_t playerHandleClick(int y, int x) {
@@ -311,6 +325,24 @@ uint32_t playerHandleClick(int y, int x) {
                 Error_Handler();
             }
             ret |= APP_EVENT_REDRAW;
+        }
+    }
+
+    { //Check for volume up button
+        int dx = abs(VOLUME_UP_X - x);
+        int dy = abs(VOLUME_UP_Y - y);
+
+        if (dx * dx + dy * dy < VOLUME_BUTTONS_RADIUS * VOLUME_BUTTONS_RADIUS) {
+            // increase volume level
+        }
+    }
+
+    { //Check for volume down button
+        int dx = abs(VOLUME_DOWN_X - x);
+        int dy = abs(VOLUME_DOWN_Y - y);
+
+        if (dx * dx + dy * dy < VOLUME_BUTTONS_RADIUS * VOLUME_BUTTONS_RADIUS) {
+            // decrease volume level
         }
     }
 
