@@ -18,8 +18,8 @@ static AppState_t state;
 //static bool redraw;
 static uint32_t events;
 //static char currentFolder[512];
-static int scrollOffset;
-#define ROW_HEIGHT CHAR_HEIGHT * 3
+static int scrollOffset = 0;
+#define ROW_HEIGHT (CHAR_HEIGHT * 3)
 
 void changeAppState(AppState_t newState) {
     state = newState;
@@ -31,7 +31,8 @@ typedef struct FileList {
     struct FileList *next;
 } FileList_t;
 
-FileList_t *files = NULL;
+static int filesLength = 0;
+static FileList_t *files = NULL;
 FileList_t *currentlyPlaying;
 
 static void freeFileList(FileList_t *list) {
@@ -57,6 +58,7 @@ static void openFolder() {
     freeFileList(files);
 
     files = newFileList("..", AM_DIR);
+    filesLength = 1;
     FileList_t *head = files;
 
     FRESULT res;
@@ -71,6 +73,7 @@ static void openFolder() {
             if (fno.fattrib & AM_DIR) {                    /* It is a directory */
                 head->next = newFileList(fno.fname, fno.fattrib);
                 head = head->next;
+                filesLength++;
             }
         }
         f_closedir(&dir);
@@ -82,6 +85,7 @@ static void openFolder() {
     while (res == FR_OK && fno.fname[0]) {
         head->next = newFileList(fno.fname, fno.fattrib);
         head = head->next;
+        filesLength++;
         f_findnext(&dir, &fno);
     }
 
@@ -140,6 +144,7 @@ static uint32_t handleClick(int x, int y) {
                 if ((clicked->attribs & AM_DIR) != 0) {
                     f_chdir(clicked->fname);
                     openFolder();
+                    scrollOffset = CHAR_HEIGHT;
                     ret |= APP_EVENT_REDRAW;
                 } else {
                     startPlaying(clicked);
@@ -163,6 +168,8 @@ static uint32_t handleScroll(int dx, int dy) {
                 scrollOffset += dx;
                 ret |= APP_EVENT_REDRAW;
             }
+            scrollOffset = scrollOffset > -(filesLength - 10) * ROW_HEIGHT ? scrollOffset : -(filesLength - 10) * ROW_HEIGHT;
+            scrollOffset = scrollOffset < CHAR_HEIGHT ? scrollOffset : CHAR_HEIGHT;
             break;
         case PLAYER:
             break;
@@ -233,15 +240,20 @@ static void drawFileExplorer() {
 
     int i = scrollOffset;
     while (head != NULL) {
-        char c[22];
-        strncpy(c, head->fname, 21);
-        c[21] = '\0';
-        uint16_t color = (head->attribs & AM_DIR) ? BLACK : BLUE;
-        ILI9341_Draw_Text(c, 10, i, color, 2, WHITE);
+        if (i >= -CHAR_HEIGHT && i <= 10 * ROW_HEIGHT) {
+            char c[22];
+            strncpy(c, head->fname, 21);
+            c[21] = '\0';
+            uint16_t color = (head->attribs & AM_DIR) ? BLACK : BLUE;
+            ILI9341_Draw_Text(c, 10, i, color, 2, WHITE);
+        }
         i += ROW_HEIGHT;
         head = head->next;
     }
 
+    int y = (scrollOffset - CHAR_HEIGHT) * 240 / ROW_HEIGHT / filesLength;
+    printf("%d, %d\n", scrollOffset, y);
+    ILI9341_Draw_Rectangle(315, abs(y), 5, (double) 10 / filesLength * 240, LIGHTGREY);
 }
 
 
