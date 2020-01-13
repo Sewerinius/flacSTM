@@ -241,9 +241,9 @@ static void drawFileExplorer() {
     int i = scrollOffset;
     while (head != NULL) {
         if (i >= -CHAR_HEIGHT && i <= 10 * ROW_HEIGHT) {
-            char c[22];
-            strncpy(c, head->fname, 21);
-            c[21] = '\0';
+            char c[26];
+            strncpy(c, head->fname, 25);
+            c[25] = '\0';
             uint16_t color = (head->attribs & AM_DIR) ? BLACK : BLUE;
             ILI9341_Draw_Text(c, 10, i, color, 2, WHITE);
         }
@@ -251,9 +251,7 @@ static void drawFileExplorer() {
         head = head->next;
     }
 
-    int y = (scrollOffset - CHAR_HEIGHT) * 240 / ROW_HEIGHT / filesLength;
-    printf("%d, %d\n", scrollOffset, y);
-    ILI9341_Draw_Rectangle(315, abs(y), 5, (double) 10 / filesLength * 240, LIGHTGREY);
+    ILI9341_Draw_Rectangle(315, abs((scrollOffset - CHAR_HEIGHT) * 240 / ROW_HEIGHT / filesLength), 5, (double) 10 / filesLength * 240, LIGHTGREY);
 }
 
 
