@@ -12,7 +12,7 @@
 #include <ILI9341_GFX_Ex.h>
 #include <ILI9341_GFX.h>
 #include <app_internal.h>
-#include "bitreader.h"
+#include <ff.h>
 #include "audioBuffer.h"
 #include "i2s.h"
 #include "player.h"

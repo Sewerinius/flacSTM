@@ -34,13 +34,7 @@
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 #include <stdio.h>
-//#include <ili9341.h>
-//#include <ili9341_touch.h>
-//#include <ILI9341_STM32_Driver.h>
 #include <usbh_platform.h>
-#include <decoder.h>
-#include <FLAC/all.h>
-#include <graphicsTest.h>
 #include <app.h>
 /* USER CODE END Includes */
 
