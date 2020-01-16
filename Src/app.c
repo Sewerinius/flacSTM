@@ -139,6 +139,8 @@ static uint32_t handleClick(int x, int y) {
     uint32_t ret = 0;
     switch (state) {
         case FILE_EXPLORER: {
+            if (y > ILI9341_SCREEN_WIDTH*3/4)
+                break;
             FileList_t *clicked = getClickedFile(x);
             if (clicked != NULL) {
                 if ((clicked->attribs & AM_DIR) != 0) {
