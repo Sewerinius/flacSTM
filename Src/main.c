@@ -175,42 +175,6 @@ int main(void)
   MX_SPI2_Init();
   /* USER CODE BEGIN 2 */
 
-//    {
-//        GPIO_PinState last = HAL_GPIO_ReadPin(GPIOE, GPIO_PIN_0);
-//        int count = 0;
-//        for (int i = 0; i < 10000000; ++i) {
-//            GPIO_PinState current = HAL_GPIO_ReadPin(GPIOE, GPIO_PIN_0);
-//            if (current != last) {
-//                count++;
-//            }
-//            last = current;
-//        }
-//        printf("Changed %d times \n", count);
-//    }
-
-//    {
-//        uint16_t buf = 0;
-//        HAL_I2S_Transmit_DMA(&hi2s3, &buf, 1);
-//        HAL_I2S_Transmit(&hi2s3, &buf, 1);
-//    }
-//  __HAL_I2S_ENABLE(&hi2s3);
-//  HAL_Delay(100);
-
-//    {
-//        GPIO_PinState last = HAL_GPIO_ReadPin(GPIOE, GPIO_PIN_0);
-//        int count = 0;
-//        for (int i = 0; i < 10000000; ++i) {
-//            GPIO_PinState current = HAL_GPIO_ReadPin(GPIOE, GPIO_PIN_0);
-//            if (current != last) {
-//                count++;
-//            }
-//            last = current;
-//        }
-//        printf("Changed %d times \n", count);
-//    }
-
-//    Error_Handler();
-
     printf("\r\nr%dp%d\r\n", ((SCB->CPUID >> 20) & 0x0F), (SCB->CPUID & 0x0F));
     MX_DriverVbusFS(0);
     printf("Waiting for USB");
@@ -227,22 +191,15 @@ int main(void)
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
-    GPIO_PinState last = HAL_GPIO_ReadPin(GPIOE, GPIO_PIN_0);
-
+//  ILI9341_Write_Command(0x21);
     while (1) {
-        uint32_t sTime = HAL_GetTick();
+//        uint32_t sTime = HAL_GetTick();
     /* USER CODE END WHILE */
     MX_USB_HOST_Process();
 
     /* USER CODE BEGIN 3 */
         appProcess();
-        uint32_t tTime = HAL_GetTick() - sTime;
-
-        GPIO_PinState current = HAL_GPIO_ReadPin(GPIOE, GPIO_PIN_0);
-        if (current != last) {
-//            printf("C\n");
-        }
-        last = current;
+//        uint32_t tTime = HAL_GetTick() - sTime;
 //        HAL_Delay(100);
 //        graphicsTest(1, 0);
 //        graphicsTest(14, 1);

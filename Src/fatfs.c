@@ -38,7 +38,7 @@ void MX_FATFS_Init(void)
 
     FRESULT fresult = f_mount(&USBHFatFS, USBHPath, 0);
     if (fresult != FR_OK) {
-        printf("f_mount: %d\n\r", fresult);
+        printf("f_mount error: %d\n\r", fresult);
         Error_Handler();
     }
 
